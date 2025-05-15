@@ -1,0 +1,1 @@
+export const JWT_SECRET = "generar-otra-token-y-guardarla-de-manera-mas-segura"
