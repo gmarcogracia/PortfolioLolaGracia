@@ -18,9 +18,14 @@ export default function Users() {
       body: JSON.stringify({ username, password })
     });
 
-    const data = await response.json();
-    if(!data.user){
+    var data = await response.json();
+    console.log(data)
+   
+    if(!data.username){
       window.alert(data.message);
+    }else{  
+      window.alert("Bienvenido "+ data.username);
+
     }
     console.log(data);
 

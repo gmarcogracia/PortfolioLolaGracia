@@ -10,6 +10,7 @@ export default function Users() {
     const username = formData.get('username') as string;
     const password = formData.get('password') as string;
 
+    
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}auth/login`, {
       method: 'POST',
       headers: {
@@ -19,8 +20,11 @@ export default function Users() {
     });
 
     const data = await response.json();
-    if(!data.user){
+    if(!data.username){
       window.alert(data.message);
+    }else{
+      alert("Bienvenid@ " + data.username
+      )
     }
     console.log(data);
 
