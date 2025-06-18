@@ -16,15 +16,18 @@ export default function Users() {
       headers: {
         'Content-Type': 'application/json'
       },
+         credentials: "include",
       body: JSON.stringify({ username, password })
+    
+
     });
 
     const data = await response.json();
     if(!data.username){
       window.alert(data.message);
     }else{
-      alert("Bienvenid@ " + data.username
-      )
+      alert("Bienvenid@ " + data.username);
+     window.location.href="../"
     }
     console.log(data);
 

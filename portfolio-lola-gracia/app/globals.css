@@ -40,3 +40,10 @@ a {
     color-scheme: dark;
   }
 }
+.ProseMirror {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  min-height: 700px;
+  outline: none;
+}

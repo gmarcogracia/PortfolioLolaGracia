@@ -15,6 +15,7 @@ export default function Users() {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: "include",
       body: JSON.stringify({ username, password })
     });
 
@@ -25,6 +26,8 @@ export default function Users() {
       window.alert(data.message);
     }else{  
       window.alert("Bienvenido "+ data.username);
+      //Te redirige al login
+       window.location.href="./";
 
     }
     console.log(data);
@@ -34,7 +37,7 @@ export default function Users() {
 
   return (
     <>
-      <h1>Hey {process.env.NEXT_PUBLIC_BACKEND_ADDRESS}</h1>
+    
       <div>
         <form onSubmit={crearUsuario}>
           <input type="text" name="username" id="username" placeholder="Nombre de Usuario" />

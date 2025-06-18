@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "./globals.css"; //Estilos globales
 import Link from "next/link";
+import '@mantine/core/styles.css';
+import { MantineProvider } from '@mantine/core';
+import { EditorProvider } from '@/context/editorContext'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +29,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+
+        
         <div id="globalNavbar">
           <Link href={'/usuarios'}>Usuarios</Link>
           <Link href={'/contacto'}>Contacto</Link>
@@ -33,7 +38,9 @@ export default function RootLayout({
           <Link href={'/podcast'}>Podcasts</Link>
 
         </div>
-        {children}
+        <EditorProvider>
+          <MantineProvider>{children}</MantineProvider>
+          </EditorProvider>
 
       </body>
     </html>
