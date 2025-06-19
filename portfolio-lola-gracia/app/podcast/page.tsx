@@ -36,7 +36,7 @@ export default async function Gallery() {
       //TODO EL MUNDO PUEDE VER LOS PODCASTS  ASI QUE NO SE LE PASA NINGUN TOKEN NI NADA PORQUE ES INNECESARIO
       //EL TOKEN DE SPOTIFY SE OBTIENE Y SE MANDA DESDE EL BACK
    
-    });
+    }); 
 
 const podcastContent = await response.json();
 const episodes = podcastContent.arrayEpisodios;

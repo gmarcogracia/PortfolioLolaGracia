@@ -53,10 +53,10 @@ export default function TiptapEditor() {
         <Button variant="default" onClick={() => editor.chain().focus().setParagraph().run()}>
           Párrafo
         </Button>
-        <Button variant="default" onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>
+        <Button variant="default" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
           Encabezado Principal
         </Button>
-        <Button variant="default" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
+        <Button variant="default" onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}>
           Encabezado Secundario
         </Button>
         <Button variant="default" onClick={() => editor.chain().focus().unsetAllMarks().clearNodes().run()}>
