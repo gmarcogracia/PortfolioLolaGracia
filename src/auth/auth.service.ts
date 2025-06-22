@@ -1,25 +1,33 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 
+
 type AuthInput = {username:string; password:string} //Esto es lo que se va a comprobar
-type SignInData ={userId:number,username:string,role:string}//Lo que devuelve al hacerSignIn
-type AuthResult ={accessToken:string; userId:number; username:string}
+type SignInData ={userId:string,username:string,roleId:number}//Lo que devuelve al hacerSignIn
+type AuthResult ={accessToken:string; userId:string; username:string}
 @Injectable()
 export class AuthService {
     constructor (
         private userService: UsersService,
-        private jwtService:JwtService    ){}
+        private jwtService:JwtService,
+    private configService:ConfigService    ){}
   
         //This checks that user exists in database. If user exists it returns his id and username, otherwise it returns null
     async validateUser(input:AuthInput):Promise <SignInData |null>{
+        console.log("You're an all star");
         const user = await this.userService.findByName(input.username)
-        if(user && user.password === input.password){
+        const bcrypt = require('bcrypt');
+        if (!user){
+        throw new NotFoundException("No se ha encontrado un usuario con ese nombre");
+        }
+        if(user &&     await(bcrypt.compare(input.password,user.password))){
             //If user exists in DB and its password equals introduced   
             return {
                 userId:user.userId,
                 username:user.username,
-                role: user.role
+                roleId: user.roleId
             }//Equal to signindata
         }
         return null
@@ -36,11 +44,17 @@ export class AuthService {
         const tokenPayload = {
             sub:user.userId, //Esto se usa mas tarde
             username:user.username,
+            roleId:user.roleId
+            
 
         }
         const accessToken = await this.jwtService.signAsync(tokenPayload);
         return {accessToken,username:user.username,userId:user.userId}
     }
+
+
+
+
 
 }
 
