@@ -6,12 +6,12 @@ export async function getUserFromCookie() {
   const cookieStore = await cookies();
   const token = await cookieStore.get('access_token')?.value;
   const allcookies =  await cookieStore.getAll();
-  console.log(allcookies)
+
 
   if (!token) return null;
 
   try {
-    console.log( process.env.NEXT_PUBLIC_JWT_SECRET,token,)
+
     if(! process.env.NEXT_PUBLIC_JWT_SECRET){
         return null
     }
@@ -22,6 +22,7 @@ export async function getUserFromCookie() {
 
   // @ts-expect-error Me voy a cagar en los muertos de typescript, esto lleva funcionando todo el desarrollo  y al desplegar se rompe. Aunque JWT.Payload puede tener propiedades custom como role Id
     const role = decoded.roleId ?? null;
+  
     return  role 
   } catch {
     return null;

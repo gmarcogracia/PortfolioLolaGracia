@@ -49,7 +49,7 @@ export default function UsuariosList() {
       method: 'PATCH',
       credentials: 'include',
     });
-    console.log(res);
+  
     if (res.ok) {
       //La lista solo muestra los no administradores
       fetchUsers();

@@ -9,7 +9,7 @@ async function getRoleFromToken(token: string | undefined): Promise<number | nul
   try {
     const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
     const { payload } = await jwtVerify(token, secret);
-    return payload.role as number;
+    return payload.roleId as number;
   } catch (err) {
     console.error("JWT inválido:", err);
     return null;
@@ -23,18 +23,19 @@ export async function middleware(request: NextRequest) {
 
 
   const pathname = request.nextUrl.pathname;
-  console.log(role, pathname);
 
   const isEditRoute = /^\/articulos\/[^\/]+\/editar$/.test(pathname);
   const isNewArticleRoute = pathname === '/articulos/nuevo-articulo';
   //COntrol de gestion de usuarios solo para admins
   const isUsersRoute = pathname  === '/usuarios/listado';
 
+
   if ((isEditRoute || isNewArticleRoute) && (role === null || role > 2)) {
     return NextResponse.redirect(new URL('/unauthorized', request.url));
   }
 
   //Solo pueden entrar admins a la getsion de usuarios para otorgar roles
+
   if ((isUsersRoute) && (role === null || role !=1)) {
     return NextResponse.redirect(new URL('/unauthorized', request.url));
   }
