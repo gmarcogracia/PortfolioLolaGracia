@@ -15,6 +15,8 @@ import './styles/styles.css';
 import Image from 'next/image';
 import IconoSpotify from '../resources/img/IconoSpotify32.png';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 type CardData = {
   bigImage: string;
   mediumImage: string;
