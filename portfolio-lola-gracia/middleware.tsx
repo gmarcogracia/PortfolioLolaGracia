@@ -11,7 +11,7 @@ async function getRoleFromToken(token: string | undefined): Promise<number | nul
     const { payload } = await jwtVerify(token, secret);
     return payload.role as number;
   } catch (err) {
-    console.error("❌ JWT inválido:", err);
+    console.error("JWT inválido:", err);
     return null;
   }
 }
@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token')?.value;
   const role = await getRoleFromToken(token);
 
-  console.log("➡️ Middleware ejecutado. Rol:", role);
+
 
   const pathname = request.nextUrl.pathname;
   console.log(role, pathname);

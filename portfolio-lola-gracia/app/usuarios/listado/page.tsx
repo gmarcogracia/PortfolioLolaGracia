@@ -9,7 +9,6 @@ import {
   Loader,
   Center,
   Paper,
-  Group,
   ScrollArea,
 } from '@mantine/core';
 
