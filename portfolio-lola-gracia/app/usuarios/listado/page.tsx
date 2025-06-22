@@ -94,7 +94,13 @@ export default function UsuariosList() {
 
       <Paper shadow="sm" radius="md" p="md" withBorder>
         <ScrollArea>
-          <Table striped highlightOnHover verticalSpacing="sm" fontSize="sm">
+       <Table
+  striped
+  highlightOnHover
+  withRowBorders
+  style={{ fontSize: '14px' }} // ajusta según lo que desees
+>
+
   <thead>
     <tr>
       <th style={{ width: '20%', textAlign: 'left' }}>Nombre</th>

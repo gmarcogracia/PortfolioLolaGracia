@@ -29,11 +29,11 @@ type Episodio = {
   description :string
   duration_ms :number //No se usa pero para que tengan los mismos parametros que en la llamada
   explicit:boolean,
-  external_urls:object
+  external_urls:any
   href:string,
   html_description:string,
    id:string,
-  images :Array<object>,
+  images :Array<any>,
   is_externally_hosted:boolean,
   is_playable:boolean,
   language:string,

@@ -8,7 +8,15 @@ export default function UnauthorizedPage() {
     <Container size="sm" py="xl">
       <Paper shadow="md" radius="md" p="xl" withBorder>
         <Center>
-          <Title order={2} color="red" mb="sm" ta="center">
+      
+        <Title
+  order={2}
+  style={{
+    color: 'red',
+    marginBottom: 'var(--mantine-spacing-sm)',
+    textAlign: 'center',
+  }}
+>
             Acceso denegado
           </Title>
         </Center>

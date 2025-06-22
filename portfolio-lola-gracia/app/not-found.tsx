@@ -16,7 +16,7 @@ export default function NotFound() {
         Asegúrate de que la URL sea correcta.
       </Text>
 
-      <Group position="center">
+      <Group justify="center">
         <Button component={Link} href="/" size="md" variant="filled" color="blue">
           Volver al inicio
         </Button>
