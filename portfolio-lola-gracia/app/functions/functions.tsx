@@ -23,7 +23,7 @@ export async function getUserFromCookie() {
   // Esa linea hace que se ignore el error de typescript
   // @ts-expect-error
     const role = decoded.roleId ?? null;
-    return  role // Aquí puedes acceder al rol (decoded.role)
+    return  role 
   } catch {
     return null;
   }
