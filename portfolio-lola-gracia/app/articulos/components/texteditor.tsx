@@ -16,13 +16,13 @@ export default function TiptapEditor() {
     attributes: {
       class: 'tiptap ProseMirror',
     },
-    // 👇 Esta línea evita problemas de SSR y warings por consola
+
  
   },
 })
   const { setEditor } = useEditorContext();
 
-  // Asigna el editor al contexto cuando esté listo
+  // Se asigna el editor cuando esté listo
   useEffect(() => {
     if (editor) {
       setEditor(editor);
@@ -36,7 +36,7 @@ export default function TiptapEditor() {
 
   return (
     <div>
-      {/* Toolbar */}
+      {/* Toolbar donde están los notones paera  */}
       <div style={{ marginBottom: '1rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
         <Button variant="default" onClick={() => editor.chain().focus().toggleBold().run()} disabled={!editor.can().chain().focus().toggleBold().run()}>
           Negrita
@@ -54,18 +54,18 @@ export default function TiptapEditor() {
           Párrafo
         </Button>
         <Button variant="default" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
-          Encabezado Principal
+          Encabezado 
         </Button>
         <Button variant="default" onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}>
           Encabezado Secundario
         </Button>
         <Button variant="default" onClick={() => editor.chain().focus().unsetAllMarks().clearNodes().run()}>
-          Limpiar
+          Limpiar texto (Quita negrita, encabezados, etc)
         </Button>
       </div>
 
       {/* Editor */}
-      <EditorContent editor={editor} className="ProseMirror"  id="editorTexto"/>
+      <EditorContent editor={editor} className="ProseMirror"  id="editorTexto"  style={{ padding: '1rem' }}/>
     
     </div>
   );

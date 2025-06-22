@@ -1,95 +1,155 @@
-// components/Gallery.tsx
-
+'use client';
 
 import {
   Card,
-  Image,
+  Image as MantineImage,
   Text,
   Group,
   SimpleGrid,
   CardSection,
+  Loader,
+  Center,
 } from '@mantine/core';
-import  './styles/styles.css';
-// import IconoSpotify from '../resources/img/iconoSpotify.svg'
-import IconoSpotify from '../resources/img/iconoSpotify.svg';
-import Link from 'next/link';
-
+import { useEffect, useState } from 'react';
+import './styles/styles.css';
+import Image from 'next/image';
+import IconoSpotify from '../resources/img/IconoSpotify32.png';
 
 type CardData = {
   bigImage: string;
   mediumImage: string;
-  smallImage:string;
+  smallImage: string;
   title: string;
   description: string;
-  link:string;
+  link: string;
 };
 
-const cards: CardData [] = [];
+export default function Gallery() {
+  const [cards, setCards] = useState<CardData[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default async function Gallery() {
-  const cards: CardData [] = [];
-   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}podcasts/`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      //TODO EL MUNDO PUEDE VER LOS PODCASTS  ASI QUE NO SE LE PASA NINGUN TOKEN NI NADA PORQUE ES INNECESARIO
-      //EL TOKEN DE SPOTIFY SE OBTIENE Y SE MANDA DESDE EL BACK
-   
-    }); 
+  useEffect(() => {
+    const fetchPodcasts = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}podcasts/`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-const podcastContent = await response.json();
-const episodes = podcastContent.arrayEpisodios;
+        const podcastContent = await response.json();
+        const episodes = podcastContent.arrayEpisodios;
 
-var num = 0;
-episodes.forEach((episode: {
-  external_urls: any; images: any[]; name: string; description: string; 
-}) => {
-  if(episode){
- cards.push({
-     bigImage: episode.images[0].url,
-  mediumImage: episode.images[1].url,
-  smallImage: episode.images[2].url,
-    title:episode.name,
-    description:episode.description.length>250 ? episode.description.substring(0,250)+"..." :episode.description,
-  link:episode.external_urls.spotify
-  
-})
-  }else{
+        const newCards: CardData[] = episodes
+          .filter((ep: any) => ep && ep.images && ep.images.length >= 3)
+          .map((episode: any) => ({
+            bigImage: episode.images[0].url,
+            mediumImage: episode.images[1].url,
+            smallImage: episode.images[2].url,
+            title: episode.name ?? 'Sin título',
+            description:
+              episode.description?.length > 250
+                ? episode.description.substring(0, 250) + '...'
+                : episode.description ?? 'Sin descripción',
+            link: episode.external_urls?.spotify ?? '#',
+          }));
 
+        setCards(newCards);
+      } catch (error) {
+        console.error('Error fetching podcasts:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPodcasts();
+  }, []);
+
+  if (loading) {
+    return (
+      <Center style={{ height: '100vh', background: 'linear-gradient(to right,rgb(227, 180, 23), #000000)' }}>
+        <Loader size="xl" color="green" />
+      </Center>
+    );
   }
-  console.log(num);
-
- num++
-
-  
-});
-console.log(podcastContent)
-console.log(episodes.length, cards.length);
 
   return (
-    <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
-      {cards.map((card, i) => (
-        <Card key={i} shadow="sm" padding="lg" radius="md" withBorder maw="390px">
-          <CardSection  style={{height:'65%' }} >
-            <Image className='podcastThumbnail' src={card.bigImage}  height={'90%'}  width={'100%'} alt={card.title}  />
-          </CardSection>
-          <Group justify="space-between" mt="md" mb="xs">
-            <Text fw={500}>{card.title}</Text>
-          </Group>
-          <Text size="sm" c="dimmed">
-            {
-            card.description
-            }
-          </Text>
-          <CardSection  style={{height:'65%' }} >
-            <a href={card.link}>
-        <IconoSpotify ></IconoSpotify>
-        </a>
-    
-          </CardSection>
-        </Card>
-      ))}
-    </SimpleGrid>
+    <div
+      style={{
+        background: 'linear-gradient(to right,rgb(249, 211, 89),rgba(223, 174, 13, 0.94))',
+        minHeight: '100vh',
+        padding: '2rem',
+      }}
+    >
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
+        {cards.map((card, i) => (
+          <Card
+            key={i}
+            shadow="sm"
+            padding="lg"
+            radius="md"
+            withBorder
+            maw="390px"
+            style={{ backgroundColor: '#000', color: 'white' }}
+          >
+            <CardSection style={{ height: '65%' }}>
+              <MantineImage
+                className="podcastThumbnail"
+                src={card.bigImage}
+                height={'90%'}
+                width={'100%'}
+                alt={card.title}
+                fallbackSrc=""
+              />
+            </CardSection>
+
+            <Group justify="space-between" mt="md" mb="xs">
+              <Text fw={500} c="white">
+                {card.title}
+              </Text>
+            </Group>
+
+            <Text size="sm" c="gray">
+              {card.description}
+            </Text>
+
+            <CardSection
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                paddingTop: '15px',
+              }}
+            >
+              <a
+                href={card.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  borderRadius: '50%',
+                  border: '1px solid #1DB954',
+                  backgroundColor: '#000',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
+                }}
+              >
+                <Image
+                  src={IconoSpotify}
+                  alt="Spotify"
+                  width={35}
+                  height={35}
+                  style={{ objectFit: 'contain' }}
+                />
+              </a>
+            </CardSection>
+          </Card>
+        ))}
+      </SimpleGrid>
+    </div>
   );
 }
+ 

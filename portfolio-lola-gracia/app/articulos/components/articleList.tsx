@@ -1,7 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Card, Text, Title, Loader, Container, Grid, Button, Center } from '@mantine/core';
+import {
+  Card,
+  Text,
+  Title,
+  Loader,
+  Container,
+  Grid,
+  Button,
+  Center,
+  Tooltip,
+  Group,
+} from '@mantine/core';
 import DOMPurify from 'dompurify';
 import Link from 'next/link';
 
@@ -16,7 +27,11 @@ type Props = {
   role?: number;
 };
 
-export default function ArticleList({ role }: Props) {
+export default function ArticleList({ role = 4 }: Props) {
+  if (!role){
+    role = 4;
+  }
+  console.log("ROle" ,role);
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -56,7 +71,14 @@ export default function ArticleList({ role }: Props) {
       <Grid gutter="lg">
         {articles.map((article) => (
           <Grid.Col key={article.id} span={{ base: 12, sm: 6, md: 4 }}>
-            <Card shadow="md" padding="lg" radius="md" withBorder h="100%" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Card
+              shadow="md"
+              padding="lg"
+              radius="md"
+              withBorder
+              h="100%"
+              style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+            >
               <div>
                 <Title order={2} mb="xs">
                   {article.title}
@@ -66,11 +88,22 @@ export default function ArticleList({ role }: Props) {
                   dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content) }}
                 />
               </div>
-              <Link href={`/articles/${article.slug}`} style={{ textDecoration: 'none', marginTop: '1rem' }}>
-                <Button fullWidth variant="light" color="teal">
-                  Leer más
-                </Button>
-              </Link>
+
+              <Group mt="md" grow>
+                <Link href={`/articulos/${article.slug}`} style={{ textDecoration: 'none' }}>
+                  <Button fullWidth variant="light" color="teal">
+                    Leer más
+                  </Button>
+                </Link>
+
+                {role <= 2 ? (
+                  <Link href={`/articulos/${article.slug}/editar`} style={{ textDecoration: 'none' }}>
+                    <Button fullWidth variant="filled" color="blue">
+                      Editar
+                    </Button>
+                  </Link>
+                ) : ""}
+              </Group>
             </Card>
           </Grid.Col>
         ))}

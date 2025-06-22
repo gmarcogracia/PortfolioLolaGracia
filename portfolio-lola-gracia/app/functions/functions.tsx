@@ -18,8 +18,8 @@ export async function getUserFromCookie() {
     }
 
     const decoded = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
-    console.log("DEcoded");
-    console.log(decoded);
+ 
+  
     const role = decoded.roleId ?? null;
     return  role // Aquí puedes acceder al rol (decoded.role)
   } catch {
