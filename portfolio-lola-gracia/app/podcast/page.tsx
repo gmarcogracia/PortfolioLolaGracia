@@ -61,7 +61,7 @@ export default function Gallery() {
 
         const podcastContent = await response.json();
         const episodes = podcastContent.arrayEpisodios;
-
+        
         const newCards: CardData[] = episodes
           .filter((ep:Episodio) => ep && ep.images && ep.images.length >= 3)
           .map((episode: Episodio) => ({

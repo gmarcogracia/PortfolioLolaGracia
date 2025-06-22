@@ -52,7 +52,7 @@ export default function CrearUsuario() {
 
   return (
     <Container size="xs" my="xl">
-      <Title align="center" mb="md">Crear nuevo usuario</Title>
+      <Title ta="center" mb="md">Crear nuevo usuario</Title>
 
       <Paper shadow="md" radius="md" p="xl" withBorder>
         <form onSubmit={crearUsuario}>
