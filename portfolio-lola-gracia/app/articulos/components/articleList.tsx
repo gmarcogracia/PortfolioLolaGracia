@@ -10,7 +10,6 @@ import {
   Grid,
   Button,
   Center,
-  Tooltip,
   Group,
 } from '@mantine/core';
 import DOMPurify from 'dompurify';
