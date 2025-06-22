@@ -8,7 +8,7 @@ async function bootstrap() {
   const host ='localhost'
 //Esto es necesario porque si no saltan fallos de cors al hacer peticiones
   app.enableCors({
-    origin: 'http://localhost:3000', // Next.js frontend
+    origin: process.env.FRONTEND_SERVER_ADDRESS, // Next.js frontend
     credentials: true, // Para usar cookies y headers
   });
   app.use(cookieParser());
