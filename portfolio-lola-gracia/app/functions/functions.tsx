@@ -19,9 +19,8 @@ export async function getUserFromCookie() {
     const decoded = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
 
  
-  //Me voy a cagar en los muertos de typescript, esto lleva funcionando todo el desarrollo  y al desplegar se rompe. Aunque JWT.Payload puede tener propiedades custom como role Id
-  // Esa linea hace que se ignore el error de typescript
-  // @ts-expect-error
+
+  // @ts-expect-error Me voy a cagar en los muertos de typescript, esto lleva funcionando todo el desarrollo  y al desplegar se rompe. Aunque JWT.Payload puede tener propiedades custom como role Id
     const role = decoded.roleId ?? null;
     return  role 
   } catch {
