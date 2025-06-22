@@ -23,77 +23,42 @@
 
 # misc
 .DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# compiled output
-/dist
-/node_modules
-/build
-
-# Logs
-logs
+Thumbs.db
 *.log
+*.tsbuildinfo
+
+# === Node ===
+node_modules/
 npm-debug.log*
-pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
+pnpm-debug.log*
 
-# OS
-.DS_Store
+# === Monorepo ===
+**/node_modules/
+**/dist/
+**/build/
+**/.turbo/
 
-# Tests
-/coverage
-/.nyc_output
+# === Frontend: portfolio-lola-gracia (Next.js) ===
+portfolio-lola-gracia/.next/
+portfolio-lola-gracia/out/
+portfolio-lola-gracia/.env.local
+portfolio-lola-gracia/.env.production.local
+portfolio-lola-gracia/.env.development.local
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+# === Backend: portfolio-lola-gracia-backend (NestJS) ===
+portfolio-lola-gracia-backend/dist/
+portfolio-lola-gracia-backend/.env
+portfolio-lola-gracia-backend/coverage/
+portfolio-lola-gracia-backend/test-results/
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# === IDEs and Editors ===
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-
-# temp directory
-.temp
-.tmp
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Diagnostic reports (https://nodejs.org/api/report.html)
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+# === OS Files ===
+*.DS_Store
+*.Thumbs.db
