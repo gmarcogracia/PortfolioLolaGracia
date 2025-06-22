@@ -88,7 +88,7 @@ export default function UsuariosList() {
 
   return (
     <Container size="lg" py="xl">
-      <Title align="center" mb="lg">
+      <Title ta="center" mb="lg">
         Lista de usuarios
       </Title>
 

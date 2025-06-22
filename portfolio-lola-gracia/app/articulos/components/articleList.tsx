@@ -63,7 +63,8 @@ export default function ArticleList({ role = 4 }: Props) {
 
   return (
     <Container py="xl">
-      <Title order={1} mb="xl" align="center">
+      
+      <Title order={1} mb="xl" ta="center">
         Artículos
       </Title>
 

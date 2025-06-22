@@ -41,7 +41,7 @@ export default function Users() {
 
   return (
     <Container size="xs" my="xl">
-      <Title align="center" mb="md">Iniciar sesión</Title>
+      <Title ta="center" mb="md">Iniciar sesión</Title>
 
       <Paper shadow="md" radius="md" p="xl" withBorder>
         <form onSubmit={onSubmit}>
@@ -67,7 +67,7 @@ export default function Users() {
 
           <Divider my="lg" label="¿No tienes cuenta?" labelPosition="center" />
 
-          <Anchor component={Link} href="/usuarios/nuevo-usuario" align="center" size="sm">
+          <Anchor component={Link} href="/usuarios/nuevo-usuario" ta="center" size="sm">
             Crear nuevo usuario
           </Anchor>
         </form>

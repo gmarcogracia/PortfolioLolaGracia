@@ -165,7 +165,7 @@ const handleTweet = () => {
   return (
     <Container size="md" py="xl">
       <Paper shadow="sm" radius="md" p="lg" withBorder>
-        <Title order={2} mb="lg" align="center">
+        <Title order={2} mb="lg" ta="center">
           Crear nuevo artículo
         </Title>
 

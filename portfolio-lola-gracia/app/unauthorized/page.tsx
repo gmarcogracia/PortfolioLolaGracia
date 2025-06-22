@@ -8,14 +8,14 @@ export default function UnauthorizedPage() {
     <Container size="sm" py="xl">
       <Paper shadow="md" radius="md" p="xl" withBorder>
         <Center>
-          <Title order={2} color="red" mb="sm" align="center">
+          <Title order={2} color="red" mb="sm" ta="center">
             Acceso denegado
           </Title>
         </Center>
-        <Text align="center" size="md" mb="md">
+        <Text ta="center" size="md" mb="md">
           No tienes permisos para acceder a esta página.
         </Text>
-        <Text align="center" size="sm" color="dimmed" mb="lg">
+        <Text ta="center" size="sm" color="dimmed" mb="lg">
           Por favor, asegúrate de haber iniciado sesión con una cuenta con los permisos necesarios.
         </Text>
         <Center>

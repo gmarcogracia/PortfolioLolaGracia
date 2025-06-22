@@ -78,7 +78,7 @@ export default function CrearUsuario() {
 
           <Divider my="lg" label="¿Ya tienes cuenta?" labelPosition="center" />
 
-          <Anchor component={Link} href="./" align="center" size="sm">
+          <Anchor component={Link} href="./" ta="center" size="sm">
             Iniciar sesión
           </Anchor>
         </form>
