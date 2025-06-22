@@ -23,6 +23,27 @@ type CardData = {
   description: string;
   link: string;
 };
+type Episodio = {
+
+  audio_preview_url: string,
+  description :string
+  duration_ms :number //No se usa pero para que tengan los mismos parametros que en la llamada
+  explicit:boolean,
+  external_urls:object
+  href:string,
+  html_description:string,
+   id:string,
+  images :Array<object>,
+  is_externally_hosted:boolean,
+  is_playable:boolean,
+  language:string,
+  languages:Array<string>,
+  name:string
+  release_date:string,
+  release_date_precision:string,
+  type:string,
+  uri:string
+}
 
 export default function Gallery() {
   const [cards, setCards] = useState<CardData[]>([]);
@@ -42,8 +63,8 @@ export default function Gallery() {
         const episodes = podcastContent.arrayEpisodios;
 
         const newCards: CardData[] = episodes
-          .filter((ep: any) => ep && ep.images && ep.images.length >= 3)
-          .map((episode: any) => ({
+          .filter((ep:Episodio) => ep && ep.images && ep.images.length >= 3)
+          .map((episode: Episodio) => ({
             bigImage: episode.images[0].url,
             mediumImage: episode.images[1].url,
             smallImage: episode.images[2].url,
@@ -152,4 +173,3 @@ export default function Gallery() {
     </div>
   );
 }
- 

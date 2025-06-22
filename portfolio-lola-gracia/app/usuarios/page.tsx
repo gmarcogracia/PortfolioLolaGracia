@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { Container, TextInput, PasswordInput, Button, Paper, Title, Text, Divider, Anchor } from '@mantine/core';
+import { Container, TextInput, PasswordInput, Button, Paper, Title,  Divider, Anchor } from '@mantine/core';
 import Link from 'next/link';
 
 export default function Users() {
