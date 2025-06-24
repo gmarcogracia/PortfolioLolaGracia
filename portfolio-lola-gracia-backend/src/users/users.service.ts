@@ -1,18 +1,17 @@
 import { Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
 
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/typeorm/entities/User';
+import { User } from '../typeorm/entities/User';
 import { Not, Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { CreateUserParams, UpdateUserParams } from 'src/utils/customTypes';
+
+import { CreateUserParams, UpdateUserParams } from '../utils/customTypes';
 import { AsignRoleDto } from './dto/asign-role.dto';
-import { NotFoundError } from 'rxjs';
+
 import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
 
 
 //users seria el array de todos los usuarios obtenidos de base de datos
-
 
 @Injectable()
 export class UsersService {
@@ -28,12 +27,7 @@ export class UsersService {
         }
      this.userRepository.save(user);
      return user.roleId;
-
-
-        
-
-
-    }
+   }
 
     deleteUser //Devolverlo lo awaitea
         (id: string) {
@@ -51,11 +45,11 @@ export class UsersService {
     async createUser(createUserDetails: CreateUserParams) {
         const bcrypt = require('bcrypt');
         const password = createUserDetails.password;
-   
+
         const hash = await bcrypt.hash(password,Number(this.configService.get("SALT_ROUNDS")))
         const userName = createUserDetails.username;
         const newUser = await this.userRepository.create({username:userName,password:hash, userId: uuidv4() });
-        
+
         return this.userRepository.save(newUser);
 
     }
@@ -77,9 +71,9 @@ export class UsersService {
                 userId:userId
             }
         });
-        
+
       return user ;
-  
+
     }
     async fetchUsers() {
      const users =  await this.userRepository.find({where:{

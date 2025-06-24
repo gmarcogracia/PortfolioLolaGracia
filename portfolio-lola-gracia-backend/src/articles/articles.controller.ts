@@ -1,9 +1,7 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, NotImplementedException, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get,  Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
-import { createArticleParams } from 'src/utils/customTypes';
-import { EditorGuard } from 'src/auth/guards/editor.guard';
-import { catchError } from 'rxjs';
-
+import { createArticleParams } from '../utils/customTypes';
+import { EditorGuard } from '../auth/guards/editor.guard';
 @Controller('articles')
 export class ArticlesController {
     constructor (private articlesService: ArticlesService ){}

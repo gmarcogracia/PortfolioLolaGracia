@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Article } from 'src/typeorm/entities/Article';
-import { createArticleParams } from 'src/utils/customTypes';
+import { Article } from '../typeorm/entities/Article';
+import { createArticleParams } from '../utils/customTypes';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 

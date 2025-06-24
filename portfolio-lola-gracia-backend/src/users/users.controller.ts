@@ -1,10 +1,8 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, ParseUUIDPipe, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { AdminGuard } from 'src/auth/guards/admin.guard';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { AsignRoleDto } from './dto/asign-role.dto';
-import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
+import { AdminGuard } from '../auth/guards/admin.guard';
+
 
 
 export type User = {
