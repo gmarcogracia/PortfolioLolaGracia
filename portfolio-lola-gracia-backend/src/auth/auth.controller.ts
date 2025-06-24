@@ -39,6 +39,7 @@ export class AuthController {
                 secure:true,
                 sameSite: 'none', 
                 maxAge: 1000 * 60 * 60 * 24,
+                path: '/',  
             });
               //La access token no se devuelve por seguridad
             delete (userAccessTokenAndStuff as { accessToken?: string }).accessToken;
