@@ -35,7 +35,7 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <EditorProvider>
           <MantineProvider>
-            <Navbar  roleId={roleId}/> 
+            <Navbar  roleId={roleId ?? null}/> 
             {children}
           </MantineProvider>
         </EditorProvider>
