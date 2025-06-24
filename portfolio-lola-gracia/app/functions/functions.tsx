@@ -5,6 +5,8 @@ import jwt from 'jsonwebtoken';
 export async function getUserFromCookie() {
   const cookieStore = await cookies();
   const token = await cookieStore.get('access_token')?.value;
+  console.log("Mi token");
+  console.log(token)
   
 
 
@@ -17,6 +19,7 @@ export async function getUserFromCookie() {
     }
 
     const decoded = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
+    console.log(decoded);
 
  
 
