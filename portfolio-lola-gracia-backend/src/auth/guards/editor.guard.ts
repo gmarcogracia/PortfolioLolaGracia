@@ -31,11 +31,11 @@ export class EditorGuard implements CanActivate {
   try {
     const tokenPayload = await this.jwtService.verifyAsync(token);
     request.user = {
-      userId: tokenPayload.sub,
+      userid: tokenPayload.sub,
       username: tokenPayload.username,
     };
 
-    const currentUser = await this.userService.findById(request.user.userId);
+    const currentUser = await this.userService.findById(request.user.userid);
 
     // Verifica que tenga rol adecuado (Editor en este caso)
     if (!currentUser || currentUser.roleId === undefined || currentUser.roleId > 2) {

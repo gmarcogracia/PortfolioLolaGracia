@@ -13,7 +13,7 @@ import {
 } from '@mantine/core';
 
 type User = {
-  userId: string;
+  userid: string;
   username: string;
 
   roleId: number;
@@ -43,9 +43,9 @@ export default function UsuariosList() {
     fetchUsers();
   }, []);
 
-  const handleGrantRole = async (userId: string) => {
+  const handleGrantRole = async (userid: string) => {
       try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/${userId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/${userid}`, {
       method: 'PATCH',
       credentials: 'include',
     });
@@ -61,15 +61,15 @@ export default function UsuariosList() {
   }
  
   };
- const handleDelete = async (userId: string) => {
+ const handleDelete = async (userid: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/${userId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/${userid}`, {
       method: 'DELETE',
       credentials: 'include',
     });
 
     if (res.ok) {
-      setUsers((prevUsers) => prevUsers.filter((user) => user.userId !== userId));
+      setUsers((prevUsers) => prevUsers.filter((user) => user.userid !== userid));
     } else {
       console.error('Error al eliminar usuario');
     }
@@ -118,9 +118,9 @@ export default function UsuariosList() {
       </tr>
     ) : (
       users.map((user) => (
-        <tr key={user.userId}>
+        <tr key={user.userid}>
           <td style={{ width: '20%' }}>{user.username}</td>
-          <td style={{ width: '40%', wordBreak: 'break-all' }}>{user.userId}</td>
+          <td style={{ width: '40%', wordBreak: 'break-all' }}>{user.userid}</td>
           <td style={{ width: '20%', textAlign: 'center' }}>{user.roleId ==2 ? "Editor" : "Usuario" 
             //Podría usarse el nombre de la tabla roles, pero como son pocos registros se puede hacer con un ternario
             }</td>
@@ -131,7 +131,7 @@ export default function UsuariosList() {
       color="teal"
       radius="md"
       size="xs"
-      onClick={() => handleGrantRole(user.userId)}
+      onClick={() => handleGrantRole(user.userid)}
     >
       {user.roleId === 2 ? 'Ascender a administrador' : 'Ascender a editor'}
     </Button>
@@ -140,7 +140,7 @@ export default function UsuariosList() {
       color="red"
       radius="md"
       size="xs"
-      onClick={() => handleDelete(user.userId)}
+      onClick={() => handleDelete(user.userid)}
     >
       Mandar usuario al abismo
     </Button>
