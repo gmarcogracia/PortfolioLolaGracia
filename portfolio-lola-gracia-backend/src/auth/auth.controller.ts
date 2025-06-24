@@ -14,8 +14,10 @@ export class AuthController {
     async login(@Body() input: { username: string, password: string },
         @Res({ passthrough: true }) res: Response
     ) {
+        console.log(input);
         const userAccessTokenAndStuff = await this.authService.authenticate(input);
         if (userAccessTokenAndStuff && process.env.ENV=="LOCAL") {
+            console.log("Local")
             res.cookie('access_token', userAccessTokenAndStuff.accessToken, {
                 httpOnly: true,
                 secure: false,        //TODO poner a true cuando se pase a https
@@ -30,6 +32,7 @@ export class AuthController {
 
             return userAccessTokenAndStuff;
         } else if (userAccessTokenAndStuff && process.env.ENV!="LOCAL") {
+            console.log("Produccion")
             //Configuracion de cookies en produccion (Si no no se guardan)
             res.cookie('access_token', userAccessTokenAndStuff.accessToken, {
                 httpOnly: true,
@@ -39,6 +42,7 @@ export class AuthController {
             });
 
         }
+        console.log("Diablo")
         return null;
 
     }

@@ -34,6 +34,7 @@ export class AuthService {
     }
     async authenticate(input:AuthInput):Promise<AuthResult |null>{
         const user= await this.validateUser(input)
+        console.log(user);
         if(!user){
             throw new UnauthorizedException('No se ha encontrado un usuario con ese nombre y contraseña');
         }
