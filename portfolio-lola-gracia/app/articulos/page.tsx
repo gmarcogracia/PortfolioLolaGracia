@@ -7,7 +7,7 @@ export default async function ArticulosPage() {
 const role =await getUserFromCookie();
   return (
     <main >
-      <ArticleList role={role ?? null} />
+      <ArticleList role={role ?? undefined} />
         {( role && role<= 2 ) && (
         <div style={{ marginBottom: '1rem' }}>
               <Link href={'/articulos/nuevo-articulo'}>
