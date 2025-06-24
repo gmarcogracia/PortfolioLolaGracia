@@ -30,7 +30,7 @@ export default function Navbar({ roleId }: NavbarProps) {
 
   const links = [
     ...(roleId === 1 ? [{ label: 'Usuarios', href: '/usuarios' }] : []),
-    { label: 'Contacto', href: '/contacto' },
+  
     { label: 'Artículos', href: '/articulos' },
     { label: 'Podcasts', href: '/podcast' },
   ];
