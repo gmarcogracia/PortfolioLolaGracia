@@ -3,9 +3,11 @@
 import { useState, FormEvent } from 'react';
 import { Container, TextInput, PasswordInput, Button, Paper, Title,  Divider, Anchor } from '@mantine/core';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Users() {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -29,7 +31,7 @@ export default function Users() {
         window.alert(data.message);
       } else {
         alert("Bienvenid@ " + data.username);
-        window.location.href = "../";
+        router.push('/');
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
