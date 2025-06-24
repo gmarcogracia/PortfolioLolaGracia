@@ -7,6 +7,7 @@ export async function getUserFromCookie() {
   const token = await cookieStore.get('access_token')?.value;
   console.log("Mi token");
   console.log(token)
+  console.log('Frontend SECRET:', process.env.NEXT_PUBLIC_JWT_SECRET);
   
 
 
