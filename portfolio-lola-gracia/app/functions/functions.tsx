@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
-type DecodedToken = {
+// Extendemos JwtPayload para incluir nuestras propiedades personalizadas
+interface DecodedToken extends JwtPayload {
   roleId?: number;
-  [key: string]: any;
-};
+}
 
 export async function getUserFromCookie(): Promise<number | null> {
   const cookieStore = await cookies();
@@ -15,7 +15,6 @@ export async function getUserFromCookie(): Promise<number | null> {
   if (!token) return null;
 
   try {
-    // ❗ En Server Components no uses jwt.verify, solo jwt.decode
     const decoded = jwt.decode(token) as DecodedToken | null;
 
     console.log("🔓 Token decodificado:", decoded);
