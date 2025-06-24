@@ -40,6 +40,12 @@ export class AuthController {
                 sameSite: 'none', 
                 maxAge: 1000 * 60 * 60 * 24,
             });
+              //La access token no se devuelve por seguridad
+            delete (userAccessTokenAndStuff as { accessToken?: string }).accessToken;
+
+
+
+            return userAccessTokenAndStuff;
 
         }
         console.log("Diablo")
