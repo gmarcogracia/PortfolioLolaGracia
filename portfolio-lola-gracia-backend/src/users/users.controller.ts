@@ -6,7 +6,7 @@ import { AdminGuard } from '../auth/guards/admin.guard';
 
 
 export type User = {
-    userid: number;
+    userId: number;
     username: string;
     password: string;
     role: string;

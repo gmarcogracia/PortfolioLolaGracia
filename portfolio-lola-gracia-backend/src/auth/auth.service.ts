@@ -5,8 +5,8 @@ import { UsersService } from '../users/users.service';
 
 
 type AuthInput = {username:string; password:string} //Esto es lo que se va a comprobar
-type SignInData ={userid:string,username:string,roleId:number}//Lo que devuelve al hacerSignIn
-type AuthResult ={accessToken:string; userid:string; username:string}
+type SignInData ={userId:string,username:string,roleId:number}//Lo que devuelve al hacerSignIn
+type AuthResult ={accessToken:string; userId:string; username:string}
 @Injectable()
 export class AuthService {
     constructor (
@@ -25,7 +25,7 @@ export class AuthService {
         if(user &&     await(bcrypt.compare(input.password,user.password))){
             //If user exists in DB and its password equals introduced   
             return {
-                userid:user.userid,
+                userId:user.userId,
                 username:user.username,
                 roleId: user.roleId
             }//Equal to signindata
@@ -42,14 +42,14 @@ export class AuthService {
     }
     async signIn(user:SignInData): Promise<AuthResult>{
         const tokenPayload = {
-            sub:user.userid, //Esto se usa mas tarde
+            sub:user.userId, //Esto se usa mas tarde
             username:user.username,
             roleId:user.roleId
             
 
         }
         const accessToken = await this.jwtService.signAsync(tokenPayload);
-        return {accessToken,username:user.username,userid:user.userid}
+        return {accessToken,username:user.username,userId:user.userId}
     }
 
 
