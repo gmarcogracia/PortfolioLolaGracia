@@ -1,34 +1,30 @@
-
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 
-export async function getUserFromCookie() {
-  const cookieStore = await cookies();
-  const token = await cookieStore.get('access_token')?.value;
-  console.log("Mi token");
-  console.log(token);
-  
+type DecodedToken = {
+  roleId?: number;
+  [key: string]: any;
+};
 
+export async function getUserFromCookie(): Promise<number | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('access_token')?.value;
+
+  console.log("🪙 Token recibido:", token);
 
   if (!token) return null;
 
   try {
+    // ❗ En Server Components no uses jwt.verify, solo jwt.decode
+    const decoded = jwt.decode(token) as DecodedToken | null;
 
-    if(! process.env.NEXT_PUBLIC_JWT_SECRET){
-        return null
-    }
+    console.log("🔓 Token decodificado:", decoded);
 
-    // const decoded = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
- 
+    if (!decoded || typeof decoded !== 'object') return null;
 
- 
-const decoded = jwt.decode(token) as { roleId?: number }; // decode no valida firma, pero es suficiente aquí
-   console.log(decoded);
-   const role = decoded.roleId ?? undefined;
-  
-    return  role 
-  } catch {
+    return decoded.roleId ?? null;
+  } catch (error) {
+    console.error("❌ Error al decodificar token:", error);
     return null;
   }
 }
-
