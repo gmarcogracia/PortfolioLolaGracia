@@ -11,6 +11,9 @@ export async function getUserFromCookie(): Promise<number | null> {
   const token = cookieStore.get('access_token')?.value;
 
   console.log("🪙 Token recibido:", token);
+  console.log("Todas las cookies:", );
+  console.log(cookieStore.getAll());
+
 
   if (!token) return null;
 
