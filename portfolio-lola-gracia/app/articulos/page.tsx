@@ -1,51 +1,32 @@
-import { NextRequest, NextResponse } from 'next/server'
-// import { NextApiRequest, NextApiResponse } from 'next'
+'use client';
 
-// Type for your user data from backend
-type UserData = {
-  userId: string
-  username: string
-  roleId: number
-}
+import { useEffect, useState } from 'react';
+import ArticleList from './components/articleList';
+import { getUserFromCookie } from '../functions/functions';
+import { Button } from '@mantine/core';
+import Link from 'next/link';
 
-// Type for error responses
-type ErrorResponse = {
-  error: string
-  status?: number
-}
+export default function ArticulosPage() {
+  const [role, setRole] = useState<number | undefined>(undefined);
 
-export async function GET(request: NextRequest) {
-  try {
-    const backendUrl = `${process.env.BACKEND_INTERNAL_ADDRESS}auth/getUserByCookie`
-    
-    // Forward the entire cookie header
-    const cookieHeader = request.headers.get('Cookie') || ''
+  useEffect(() => {
+    const fetchRole = async () => {
+      const roleFromCookie = await getUserFromCookie();
+      setRole(roleFromCookie ?? undefined);
+    };
+    fetchRole();
+  }, []);
 
-    const backendResponse = await fetch(backendUrl, {
-      method: 'GET',
-      headers: {
-        'Cookie': cookieHeader,
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    })
-
-    if (!backendResponse.ok) {
-      const errorData: ErrorResponse = await backendResponse.json()
-      return NextResponse.json(
-        { error: errorData.error || 'Authentication failed' },
-        { status: backendResponse.status }
-      )
-    }
-
-    const userData: UserData = await backendResponse.json()
-    return NextResponse.json(userData)
-
-  } catch (error) {
-    console.error('[AUTH VALIDATE ERROR]', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
-  }
+  return (
+    <main>
+      <ArticleList role={role ?? undefined} />
+      {role && role <= 2 && (
+        <div style={{ marginBottom: '1rem' }}>
+          <Link href="/articulos/nuevo-articulo">
+            <Button color="teal">Crear nuevo artículo</Button>
+          </Link>
+        </div>
+      )}
+    </main>
+  );
 }
