@@ -1,5 +1,7 @@
-import { cookies } from 'next/headers';
+
+//Se ha comentado la mitad del codigo porque se rompe en produccion
 import jwt, { JwtPayload } from 'jsonwebtoken';
+  // import { cookies } from 'next/headers';
 
 // Extendemos JwtPayload para incluir nuestras propiedades personalizadas
 interface DecodedToken extends JwtPayload {
@@ -9,33 +11,34 @@ interface DecodedToken extends JwtPayload {
 export async function getUserFromCookie(): Promise<number | null> {
 
 
-console.log("ENtra en general")
+// console.log("ENtra en general")
 
-  if (process.env.NEXT_PUBLIC_ENV=="LOCAL"){
-    console.log("Entra a local")
-//No funciona en produccion
-  const cookieStore = await cookies();
-  const token = cookieStore.get('access_token')?.value;
-
-
-  console.log(cookieStore.getAll());
+//   if (process.env.NEXT_PUBLIC_ENV=="LOCAL"){
+  
+//     console.log("Entra a local")
+// //No funciona en produccion
+//   const cookieStore = await cookies();
+//   const token = cookieStore.get('access_token')?.value;
 
 
-  if (!token) return null;
+//   console.log(cookieStore.getAll());
 
-  try {
-    const decoded = jwt.decode(token) as DecodedToken | null;
+
+//   if (!token) return null;
+
+//   try {
+//     const decoded = jwt.decode(token) as DecodedToken | null;
 
    
 
-    if (!decoded || typeof decoded !== 'object') return null;
+//     if (!decoded || typeof decoded !== 'object') return null;
 
-    return decoded.roleId ?? null;
-  } catch (error) {
-    console.error("Error al decodificar token:", error);
-    return null;
-  }
-  }else{
+//     return decoded.roleId ?? null;
+//   } catch (error) {
+//     console.error("Error al decodificar token:", error);
+//     return null;
+//   }
+//   }else{
 
     console.log("ESta entrando a la version de produccion");
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}auth/getUserByCookie`, {
@@ -49,6 +52,6 @@ console.log(user);
 return user.roleId ?? null;
 
 
-  }
+  // }
   
 }
