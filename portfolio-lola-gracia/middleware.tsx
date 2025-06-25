@@ -5,24 +5,15 @@ import type { NextRequest } from 'next/server'
 export async function middleware(request: NextRequest) {
   try {
     // 1. Make request to backend WITH credentials
-    const backendResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}auth/getUserByCookie`,
-      {
-        method: 'GET',
-        credentials: 'include', // Crucial for cross-domain cookies
-        headers: {
-          'Content-Type': 'application/json',
-          // Forward the original request's cookies
-          'Cookie': request.headers.get('Cookie') || ''
-        }
-      }
-    )
+  const response = await fetch(new URL('/api/auth/validate', request.url), {
+  credentials: 'include'
+})
 
-    if (!backendResponse.ok) {
-      throw new Error(`Backend responded with ${backendResponse.status}`)
+    if (!response.ok) {
+      throw new Error(`Backend responded with ${response.status}`)
     }
 
-    const user = await backendResponse.json()
+    const user = await response.json()
     const role = user.roleId ?? null
 
     // 2. Authorization logic
