@@ -21,7 +21,7 @@ interface NavbarProps {
   roleId: number | null;
 }
 
-export default async function Navbar({ roleId }: NavbarProps) {
+export default  function Navbar({ roleId }: NavbarProps) {
   const [opened, { toggle, close }] = useDisclosure(false);
   const pathname = usePathname();
  

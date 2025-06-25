@@ -1,12 +1,13 @@
 
 //Se ha comentado la mitad del codigo porque se rompe en produccion
-import jwt, { JwtPayload } from 'jsonwebtoken';
-  // import { cookies } from 'next/headers';
+// import  { JwtPayload } from 'jsonwebtoken';
+//   // import { cookies } from 'next/headers';
 
-// Extendemos JwtPayload para incluir nuestras propiedades personalizadas
-interface DecodedToken extends JwtPayload {
-  roleId?: number;
-}
+// // 
+// interface 
+// DecodedToken extends JwtPayload {
+//   roleId?: number;
+// }
 
 export async function getUserFromCookie(): Promise<number | null> {
 
