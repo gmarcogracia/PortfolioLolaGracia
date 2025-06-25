@@ -97,6 +97,8 @@ export default function EditorPage() {
   const [title, setTitle] = useState('');
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+  console.log("ROle nuevo"); 
+   console.log(role)
   if(!role ||  role > 2){
       router.push('../unauthorized');
   }
