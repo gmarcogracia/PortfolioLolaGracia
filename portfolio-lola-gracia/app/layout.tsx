@@ -8,6 +8,7 @@ import { EditorProvider } from '@/context/editorContext';
 import Navbar from './components/menu'; 
  import { getUserFromCookie } from './functions/functions';
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
