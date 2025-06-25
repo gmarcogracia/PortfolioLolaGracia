@@ -8,6 +8,8 @@ export async function middleware(request: NextRequest) {
   const response = await fetch(new URL('/api/auth/validate', request.url), {
   credentials: 'include'
 })
+console.log("Middleware response")
+console.log(response);
 
     if (!response.ok) {
       throw new Error(`Backend responded with ${response.status}`)

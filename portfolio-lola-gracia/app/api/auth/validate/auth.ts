@@ -17,6 +17,7 @@ type ErrorResponse = {
 export async function GET(request: NextRequest) {
   try {
     const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}auth/getUserByCookie`
+    console.log("BackendUrl")
     console.log(backendUrl);
     
     // Forward the entire cookie header
