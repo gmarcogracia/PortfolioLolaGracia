@@ -30,7 +30,7 @@ export default function ArticleList({ role = 4 }: Props) {
   if (!role){
     role = 4;
   }
-  console.log("ROle" ,role);
+
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
 

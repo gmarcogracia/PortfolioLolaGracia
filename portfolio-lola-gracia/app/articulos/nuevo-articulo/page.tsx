@@ -98,6 +98,8 @@ export default function EditorPage() {
       };
       fetchRole();
     }, []);
+    console.log("roleNuevo");
+    console.log(role)
   const { editor } = useEditorContext();
   const [title, setTitle] = useState('');
   const [success, setSuccess] = useState(false);
