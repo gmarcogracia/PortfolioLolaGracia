@@ -9,9 +9,10 @@ interface DecodedToken extends JwtPayload {
 export async function getUserFromCookie(): Promise<number | null> {
 
 
-
+console.log("ENtra en general")
 
   if (process.env.NEXT_PUBLIC_ENV=="LOCAL"){
+    console.log("Entra a local")
 //No funciona en produccion
   const cookieStore = await cookies();
   const token = cookieStore.get('access_token')?.value;
@@ -36,6 +37,7 @@ export async function getUserFromCookie(): Promise<number | null> {
   }
   }else{
 
+    console.log("ESta entrando a la version de produccion");
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}auth/getUserByCookie`, {
   method: 'GET',
   credentials: 'include',
