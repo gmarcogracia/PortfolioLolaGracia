@@ -2,6 +2,8 @@ import ArticleList from './components/articleList';
 import { getUserFromCookie } from '../functions/functions';
 import { Button } from '@mantine/core';
 import Link from 'next/link';
+//Se ha pasado a cliente en el ultimo mome to porque desplegar aplicaciones es una mierda
+'use client';
       
 export default async function ArticulosPage() {
 const role =await getUserFromCookie();

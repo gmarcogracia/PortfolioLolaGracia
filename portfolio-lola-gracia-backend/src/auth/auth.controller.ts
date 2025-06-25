@@ -66,6 +66,7 @@ export class AuthController {
     async getUserByCookie(@Req() req: Request)
     {
         const token = req.cookies?.access_token;
+        console.log("Mi token " ,token)
 
     if (!token) throw new UnauthorizedException('Token no existe');
 
