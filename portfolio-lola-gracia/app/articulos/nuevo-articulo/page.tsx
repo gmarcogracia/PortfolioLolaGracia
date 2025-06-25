@@ -100,6 +100,8 @@ export default function EditorPage() {
     }, []);
     console.log("roleNuevo");
     console.log(role)
+    console.log("EEEEEEEEEEEEEEE")
+    console.log((!role ||  role > 2))
   const { editor } = useEditorContext();
   const [title, setTitle] = useState('');
   const [success, setSuccess] = useState(false);
