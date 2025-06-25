@@ -18,8 +18,6 @@ import { getUserFromCookie } from '@/app/functions/functions';
 
 const TiptapEditor = dynamic(() => import('../components/texteditor'), { ssr: false });
 
-
-
 //Se usara para convertir en negrita en los posts de twitter
 const boldCharMap: { [key: string]: string } = {
   a: '𝗮', b: '𝗯', c: '𝗰', d: '𝗱', e: '𝗲', f: '𝗳',
@@ -33,6 +31,7 @@ const boldCharMap: { [key: string]: string } = {
   S: '𝗦', T: '𝗧', U: '𝗨', V: '𝗩', W: '𝗪', X: '𝗫',
   Y: '𝗬', Z: '𝗭',
 };
+
 //Se convertira en cursiva
 const italicCharMap: { [key: string]: string } = {
   a: '𝘢', b: '𝘣', c: '𝘤', d: '𝘥', e: '𝘦', f: '𝘧',
@@ -46,7 +45,6 @@ const italicCharMap: { [key: string]: string } = {
   S: '𝘚', T: '𝘛', U: '𝘜', V: '𝘝', W: '𝘞', X: '𝘟',
   Y: '𝘠', Z: '𝘡',
 };
-
 
 //Convierte el texto en negrita o en cursiva a formtato usable en twitter
 function parseRichText(node: HTMLElement): string {
@@ -84,30 +82,59 @@ function toItalic(text: string): string {
 }
 
 export default function EditorPage() {
-    const router = useRouter();
-    const [role, setRole] = useState<number | undefined>(undefined);
-  
-    useEffect(() => {
-      const fetchRole = async () => {
-        const roleFromCookie = await getUserFromCookie();
-        setRole(roleFromCookie ?? undefined);
-        if(!role ||  role > 2){
-    console.log("Entra en unauthorized");
-      router.push('../unauthorized');
-  }
-      };
-      fetchRole();
-    }, []);
-    console.log("roleNuevo");
-    console.log(role)
-    console.log("EEEEEEEEEEEEEEE")
-    console.log((!role ||  role > 2))
+  const router = useRouter();
+  const [role, setRole] = useState<number | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
   const { editor } = useEditorContext();
   const [title, setTitle] = useState('');
   const [success, setSuccess] = useState(false);
 
+  // Verificación de autorización mejorada
+  useEffect(() => {
+    let isMounted = true;
 
-  
+    const verifyAuth = async () => {
+      try {
+        const roleFromCookie = await getUserFromCookie();
+        if (!isMounted) return;
+
+        console.log("Rol obtenido:", roleFromCookie);
+        
+        if (roleFromCookie === null || roleFromCookie > 2) {
+          console.log("Redirigiendo a no autorizado");
+          router.push('../unauthorized');
+          return;
+        }
+
+        setRole(roleFromCookie);
+      } catch (error) {
+        console.error("Error en verificación de auth:", error);
+        if (!isMounted) return;
+        router.push('../unauthorized');
+      } finally {
+        if (isMounted) setAuthChecked(true);
+      }
+    };
+
+    verifyAuth();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [router]);
+
+  // Mostrar carga mientras se verifica la autenticación
+  if (!authChecked) {
+    return (
+      <Container size="md" py="xl">
+        <Paper shadow="sm" radius="md" p="lg" withBorder>
+          <Title order={2} mb="lg" ta="center">
+            Verificando permisos...
+          </Title>
+        </Paper>
+      </Container>
+    );
+  }
 
   const handleSave = async () => {
     const htmlContent = editor?.getHTML() || '';
@@ -136,52 +163,50 @@ export default function EditorPage() {
       }, 1500);
     }
   };
-  
 
-const handleTweet = () => {
-  const html = editor?.getHTML() || '';
+  const handleTweet = () => {
+    const html = editor?.getHTML() || '';
 
-  // Convierte el texto html de contenido a texto enriquecido compatible con twitter
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-  const elements = doc.body.childNodes;
+    // Convierte el texto html de contenido a texto enriquecido compatible con twitter
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const elements = doc.body.childNodes;
 
-  let result = '';
+    let result = '';
 
-  elements.forEach((el) => {
-    if (el.nodeType === Node.ELEMENT_NODE) {
-      const node = el as HTMLElement;
+    elements.forEach((el) => {
+      if (el.nodeType === Node.ELEMENT_NODE) {
+        const node = el as HTMLElement;
 
-      switch (node.tagName) {
-        //Añade los espacios correspondientes a los parrafos
-        case 'P':
-          result += parseRichText(node) + '\n\n';
-          break;
-                  //Añade el iconito de bullet point en las listas desordenadas
-        case 'UL':
-          node.querySelectorAll('li').forEach(li => {
-            result += `• ${parseRichText(li)}\n`;
-          });
-          result += '\n';
-          break;
-          //añade los numeros a laslistas ordenadas
-        case 'OL':
-          node.querySelectorAll('li').forEach((li, i) => {
-            result += `${i + 1}. ${parseRichText(li)}\n`;
-          });
-          result += '\n';
-          break;
-        default:
-          result += parseRichText(node) + '\n\n';
+        switch (node.tagName) {
+          // Añade los espacios correspondientes a los parrafos
+          case 'P':
+            result += parseRichText(node) + '\n\n';
+            break;
+          // Añade el iconito de bullet point en las listas desordenadas
+          case 'UL':
+            node.querySelectorAll('li').forEach(li => {
+              result += `• ${parseRichText(li)}\n`;
+            });
+            result += '\n';
+            break;
+          // añade los numeros a las listas ordenadas
+          case 'OL':
+            node.querySelectorAll('li').forEach((li, i) => {
+              result += `${i + 1}. ${parseRichText(li)}\n`;
+            });
+            result += '\n';
+            break;
+          default:
+            result += parseRichText(node) + '\n\n';
+        }
       }
-    }
-  });
+    });
 
-  const tweetText = encodeURIComponent(result.slice(0, 280));
-  const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
-  window.open(tweetUrl, '_blank');
-};
-
+    const tweetText = encodeURIComponent(result.slice(0, 280));
+    const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+    window.open(tweetUrl, '_blank');
+  };
 
   return (
     <Container size="md" py="xl">
@@ -215,7 +240,13 @@ const handleTweet = () => {
         </div>
 
         <Group justify="space-between" mt="xl">
-          <Button leftSection={<IconBrandTwitter size={18} />} onClick={handleTweet} variant="light" color="blue" title="We're still not calling it X, you manchild">
+          <Button 
+            leftSection={<IconBrandTwitter size={18} />} 
+            onClick={handleTweet} 
+            variant="light" 
+            color="blue" 
+            title="We're still not calling it X, you manchild"
+          >
             Tuitear contenido
           </Button>
 
