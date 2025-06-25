@@ -4,6 +4,8 @@ import type { NextRequest } from 'next/server';
 export async function middleware(request: NextRequest) {
   // 1. Extract the access_token cookie from the incoming request
   const accessToken = request.cookies.get('access_token')?.value;
+  console.log("Access token")
+  console.log(accessToken);
 
   // If no token exists, redirect to unauthorized
   if (!accessToken) {
