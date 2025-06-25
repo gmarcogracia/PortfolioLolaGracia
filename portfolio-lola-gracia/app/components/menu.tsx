@@ -14,7 +14,7 @@ import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import { getUserFromCookie } from '../functions/functions';
+
 
 //Si no hago esto salta un fallo de typescript
 interface NavbarProps {
@@ -24,7 +24,7 @@ interface NavbarProps {
 export default async function Navbar({ roleId }: NavbarProps) {
   const [opened, { toggle, close }] = useDisclosure(false);
   const pathname = usePathname();
-  roleId = roleId ??  await getUserFromCookie();
+ 
 
   useEffect(() => {
     close();

@@ -6,7 +6,7 @@ import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import { EditorProvider } from '@/context/editorContext';
 import Navbar from './components/menu'; 
-//  import { getUserFromCookie } from './functions/functions';
+ import { getUserFromCookie } from './functions/functions';
 
 
 const geistSans = Geist({
@@ -29,14 +29,14 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-    // const roleId = await getUserFromCookie();
+    const roleId = await getUserFromCookie();
 
   return (
     <html lang="es">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <EditorProvider>
           <MantineProvider>
-            {/* <Navbar  roleId={roleId ?? null}/>  */}
+            <Navbar  roleId={roleId ?? null}/> 
             {children}
           </MantineProvider>
         </EditorProvider>
