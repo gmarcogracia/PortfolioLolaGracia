@@ -135,7 +135,7 @@ export default function EditorPage() {
       </Container>
     );
   }
-
+console.log(role)
   const handleSave = async () => {
     const htmlContent = editor?.getHTML() || '';
     const slug = title.trim().replaceAll(' ', '-');
