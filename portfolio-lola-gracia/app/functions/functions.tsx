@@ -7,11 +7,16 @@ interface DecodedToken extends JwtPayload {
 }
 
 export async function getUserFromCookie(): Promise<number | null> {
+
+
+
+
+  if (process.env.NEXT_PUBLIC_ENV=="LOCAL"){
+//No funciona en produccion
   const cookieStore = await cookies();
   const token = cookieStore.get('access_token')?.value;
 
-  console.log("🪙 Token recibido:", token);
-  console.log("Todas las cookies:", );
+
   console.log(cookieStore.getAll());
 
 
@@ -20,13 +25,27 @@ export async function getUserFromCookie(): Promise<number | null> {
   try {
     const decoded = jwt.decode(token) as DecodedToken | null;
 
-    console.log("🔓 Token decodificado:", decoded);
+   
 
     if (!decoded || typeof decoded !== 'object') return null;
 
     return decoded.roleId ?? null;
   } catch (error) {
-    console.error("❌ Error al decodificar token:", error);
+    console.error("Error al decodificar token:", error);
     return null;
   }
+  }else{
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}auth/getUserByCookie`, {
+  method: 'GET',
+  credentials: 'include',
+});
+const user = await response.json();
+console.log("User from cookie");
+console.log(user);
+return user.roleId ?? null;
+
+
+  }
+  
 }

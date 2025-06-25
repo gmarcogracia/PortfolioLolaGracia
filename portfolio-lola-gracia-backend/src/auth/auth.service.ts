@@ -9,6 +9,7 @@ type SignInData ={userId:string,username:string,roleId:number}//Lo que devuelve 
 type AuthResult ={accessToken:string; userId:string; username:string}
 @Injectable()
 export class AuthService {
+
     constructor (
         private userService: UsersService,
         private jwtService:JwtService,
@@ -52,6 +53,20 @@ export class AuthService {
         }
         const accessToken = await this.jwtService.signAsync(tokenPayload);
         return {accessToken,username:user.username,userId:user.userId}
+    }
+     async  getUserByCookie(token: any) {
+           try {
+      const payload = await this.jwtService.verifyAsync(token);
+
+      return {
+        userId: payload.sub,
+        username: payload.username,
+        roleId: payload.roleId,
+      };
+    } catch (err) {
+      throw new UnauthorizedException('Token inválido');
+    }
+       
     }
 
 
