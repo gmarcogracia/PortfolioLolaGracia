@@ -10,6 +10,8 @@ async function bootstrap() {
   app.enableCors({
     origin: process.env.FRONTEND_SERVER_ADDRESS, // Next.js frontend
     credentials: true, // Para usar cookies y headers
+       allowedHeaders: ['Content-Type', 'Cookie']
+   
   });
   app.use(cookieParser());
   await app.listen(process.env.PORT ?? 3001); //CAMBIAR PUERTO
