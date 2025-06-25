@@ -84,24 +84,26 @@ function toItalic(text: string): string {
 }
 
 export default function EditorPage() {
+    const router = useRouter();
     const [role, setRole] = useState<number | undefined>(undefined);
   
     useEffect(() => {
       const fetchRole = async () => {
         const roleFromCookie = await getUserFromCookie();
         setRole(roleFromCookie ?? undefined);
+        if(!role ||  role > 2){
+    console.log("Entra en unauthorized");
+      router.push('../unauthorized');
+  }
       };
       fetchRole();
     }, []);
   const { editor } = useEditorContext();
   const [title, setTitle] = useState('');
   const [success, setSuccess] = useState(false);
-  const router = useRouter();
-  console.log("ROle nuevo"); 
-   console.log(role)
-  if(!role ||  role > 2){
-      router.push('../unauthorized');
-  }
+
+
+  
 
   const handleSave = async () => {
     const htmlContent = editor?.getHTML() || '';
