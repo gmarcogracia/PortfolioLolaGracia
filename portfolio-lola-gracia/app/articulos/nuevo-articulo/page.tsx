@@ -12,8 +12,9 @@ import {
 } from '@mantine/core';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IconCheck, IconBrandTwitter } from '@tabler/icons-react';
+import { getUserFromCookie } from '@/app/functions/functions';
 
 const TiptapEditor = dynamic(() => import('../components/texteditor'), { ssr: false });
 
@@ -83,10 +84,22 @@ function toItalic(text: string): string {
 }
 
 export default function EditorPage() {
+    const [role, setRole] = useState<number | undefined>(undefined);
+  
+    useEffect(() => {
+      const fetchRole = async () => {
+        const roleFromCookie = await getUserFromCookie();
+        setRole(roleFromCookie ?? undefined);
+      };
+      fetchRole();
+    }, []);
   const { editor } = useEditorContext();
   const [title, setTitle] = useState('');
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+  if(!role ||  role > 2){
+      router.push('../unauthorized');
+  }
 
   const handleSave = async () => {
     const htmlContent = editor?.getHTML() || '';
