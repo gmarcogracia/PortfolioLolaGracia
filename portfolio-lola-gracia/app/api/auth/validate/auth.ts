@@ -16,7 +16,7 @@ type ErrorResponse = {
 
 export async function GET(request: NextRequest) {
   try {
-    const backendUrl = `${process.env.BACKEND_INTERNAL_ADDRESS}auth/getUserByCookie`
+    const backendUrl = `${process.env.BACKEND_SERVER_ADDRESS}auth/getUserByCookie`
     
     // Forward the entire cookie header
     const cookieHeader = request.headers.get('Cookie') || ''
