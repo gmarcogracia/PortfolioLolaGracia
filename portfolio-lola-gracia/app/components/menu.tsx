@@ -13,15 +13,13 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { getUserFromCookie } from '../functions/functions';
 
 
-//Si no hago esto salta un fallo de typescript
-interface NavbarProps {
-  roleId: number | null;
-}
 
-export default  function Navbar({ roleId }: NavbarProps) {
+
+export default  function Navbar() {
   const [opened, { toggle, close }] = useDisclosure(false);
   const pathname = usePathname();
  
@@ -29,7 +27,16 @@ export default  function Navbar({ roleId }: NavbarProps) {
   useEffect(() => {
     close();
   }, [pathname, close]);
+  const [roleId, setRoleId] = useState<number | null>(null);
 
+  useEffect(() => {
+    const fetchRole = async () => {
+      const role = await getUserFromCookie(); // fetch desde el navegador: SÍ incluye cookies
+      setRoleId(role);
+    };
+
+    fetchRole();
+  }, []);
   const links = [
     ...(roleId === 1 ? [{ label: 'Usuarios', href: '/usuarios/listado' }] : []),
   
