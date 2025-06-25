@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { NextApiRequest, NextApiResponse } from 'next'
+
 
 // Type for your user data from backend
 type UserData = {
