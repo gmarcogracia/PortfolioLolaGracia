@@ -1,6 +1,5 @@
-'use client';
 /* eslint-disable @typescript-eslint/no-unused-vars*/
-
+'use client';
 import { useEffect, useState } from 'react';
 import {
   Container,
@@ -18,114 +17,108 @@ import { useRouter } from 'next/navigation';
 type User = {
   userId: string;
   username: string;
-
   roleId: number;
 };
 
 export default function UsuariosList() {
-  const router = useRouter()
+  const router = useRouter();
   const [role, setRole] = useState<number | null>(null);
-  const [authChecked, setAuthChecked] = useState(false);
-
-
-
-   //Susituto del middleware
-    useEffect(() => {
-      let isMounted = true;
-  
-      const verifyAuth = async () => {
-        try {
-          setLoading(true);
-          const roleFromCookie = await getUserFromCookie();
-          if (!isMounted) return;
-  
-          console.log("Rol obtenido:", role);
-          
-          if (roleFromCookie === null || roleFromCookie != 1) {
-            console.log("Redirigiendo a no autorizado");
-            router.push('.././unauthorized');
-            return;
-          }
-  
-          setRole(roleFromCookie);
-        } catch (error) {
-          console.error("Error en verificación de auth:", error);
-          if (!isMounted) return;
-          router.push('../unauthorized');
-        } finally {
-          if (isMounted){
-  
-          setAuthChecked(true);
-          setLoading(false);
-        }
-  
-        }
-      };
-  
-      verifyAuth();
-  
-      return () => {
-        isMounted = false;
-      };
-    }, [router]);
-  const fetchUsers = async () => {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/list`, {
-          credentials: 'include',
-        });
-        const data = await res.json();
-        setUsers(data);
-      } catch (error) {
-        console.error('Error cargando usuarios:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-  
+  // Filtrar usuarios que NO son administradores (roleId !== 1). No puedes quitarle permisos a otro admin
 
+  const nonAdminUsers = users.filter(user => user.roleId !== 1);
+
+  // Sustituto del middleware 
+  useEffect(() => {
+    let isMounted = true;
+
+    const verifyAuth = async () => {
+      try {
+        setLoading(true);
+        const roleFromCookie = await getUserFromCookie();
+        if (!isMounted) return;
+        
+        // Solo permitir acceso a administradores (roleId = 1)
+        // Only allow access to admins (roleId = 1)
+        if (roleFromCookie === null || roleFromCookie !== 1) {
+          router.push('../unauthorized');
+          return;
+        }
+
+        setRole(roleFromCookie);
+      } catch (error) {
+        console.error("Error en verificación de auth:", error);
+        if (!isMounted) return;
+        router.push('../unauthorized');
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    verifyAuth();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [router]);
+
+  // Obtener lista de usuarios 
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/list`, {
+        credentials: 'include',
+      });
+      const data = await res.json();
+      setUsers(data);
+    } catch (error) {
+      console.error('Error cargando usuarios:', error);
+    }
+  };
+
+  // Cargar usuarios al montar el componente 
+  useEffect(() => {
     fetchUsers();
   }, []);
 
+  // Manejar cambio de rol 
   const handleGrantRole = async (userId: string) => {
-      try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/${userId}`, {
-      method: 'PATCH',
-      credentials: 'include',
-    });
-  
-    if (res.ok) {
-      //La lista solo muestra los no administradores
-      fetchUsers();
-    } else {
-      console.error('Error al Otorgar rol');
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/${userId}`, {
+        method: 'PATCH',
+        credentials: 'include',
+      });
+    
+      if (res.ok) {
+        // Actualizar lista después de cambiar rol para reflejar los cambios
+
+        await fetchUsers();
+      }
+    } catch (error) {
+      console.error('Error al otorgar rol:', error);
     }
-  } catch (error) {
-    console.error('Error al Otorgar rrol', error);
-  }
- 
   };
- const handleDelete = async (userId: string) => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/${userId}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    });
 
-    if (res.ok) {
-      setUsers((prevUsers) => prevUsers.filter((user) => user.userId !== userId));
-    } else {
-      console.error('Error al eliminar usuario');
+  // Manejar eliminación de usuario / Handle user deletion
+  const handleDelete = async (userId: string) => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/${userId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (res.ok) {
+        // Eliminar usuario de la lista localmente sin necesidad de refrescar
+       
+        setUsers(prevUsers => prevUsers.filter(user => user.userId !== userId));
+      }
+    } catch (error) {
+      console.error('Error al eliminar usuario:', error);
     }
-  } catch (error) {
-    console.error('Error al eliminar usuario:', error);
-  }
-};
+  };
 
+  // Mostrar pantalla de carga
   if (loading) {
     return (
       <Center h="100vh">
@@ -142,65 +135,57 @@ export default function UsuariosList() {
 
       <Paper shadow="sm" radius="md" p="md" withBorder>
         <ScrollArea>
-       <Table
-  striped
-  highlightOnHover
-  withRowBorders
-  style={{ fontSize: '14px' }} // ajusta según lo que desees
->
-
-  <thead>
-    <tr>
-      <th style={{ width: '20%', textAlign: 'left' }}>Nombre</th>
-      <th style={{ width: '40%', textAlign: 'left' }}>Id</th>
-      <th style={{ width: '20%', textAlign: 'center' }}>Rol actual</th>
-      <th style={{ width: '20%', textAlign: 'center' }}>Acción</th>
-    </tr>
-  </thead>
-  <tbody>
-    {users.length === 0 ? (
-      <tr>
-        <td colSpan={4}>
-          <Center>No hay usuarios registrados. (Que no sean administradores)</Center>
-        </td>
-      </tr>
-    ) : (
-      users.map((user) => (
-        <tr key={user.userId}>
-          <td style={{ width: '20%' }}>{user.username}</td>
-          <td style={{ width: '40%', wordBreak: 'break-all' }}>{user.userId}</td>
-          <td style={{ width: '20%', textAlign: 'center' }}>{user.roleId ==2 ? "Editor" : "Usuario" 
-            //Podría usarse el nombre de la tabla roles, pero como son pocos registros se puede hacer con un ternario
-            }</td>
-<td style={{ width: '20%', textAlign: 'center' }}>
-  <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
-    <Button
-      variant="outline"
-      color="teal"
-      radius="md"
-      size="xs"
-      onClick={() => handleGrantRole(user.userId)}
-    >
-      {user.roleId === 2 ? 'Ascender a administrador' : 'Ascender a editor'}
-    </Button>
-    <Button
-      variant="outline"
-      color="red"
-      radius="md"
-      size="xs"
-      onClick={() => handleDelete(user.userId)}
-    >
-      Mandar usuario al abismo
-    </Button>
-  </div>
-</td>
-
-        </tr>
-      ))
-    )}
-  </tbody>
-</Table>
-
+          <Table striped highlightOnHover withRowBorders style={{ fontSize: '14px' }}>
+            <thead>
+              <tr>
+                <th style={{ width: '20%', textAlign: 'left' }}>Nombre</th>
+                <th style={{ width: '40%', textAlign: 'left' }}>Id</th>
+                <th style={{ width: '20%', textAlign: 'center' }}>Rol actual</th>
+                <th style={{ width: '20%', textAlign: 'center' }}>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {nonAdminUsers.length === 0 ? (
+                <tr>
+                  <td colSpan={4}>
+                    <Center>No hay usuarios registrados (que no sean administradores)</Center>
+                  </td>
+                </tr>
+              ) : (
+                nonAdminUsers.map((user) => (
+                  <tr key={user.userId}>
+                    <td style={{ width: '20%' }}>{user.username}</td>
+                    <td style={{ width: '40%', wordBreak: 'break-all' }}>{user.userId}</td>
+                    <td style={{ width: '20%', textAlign: 'center' }}>
+                      {user.roleId === 2 ? "Editor" : "Usuario"}
+                    </td>
+                    <td style={{ width: '20%', textAlign: 'center' }}>
+                      <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                        <Button
+                          variant="outline"
+                          color="teal"
+                          radius="md"
+                          size="xs"
+                          onClick={() => handleGrantRole(user.userId)}
+                        >
+                          {user.roleId === 2 ? 'Ascender a administrador' : 'Ascender a editor'}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          color="red"
+                          radius="md"
+                          size="xs"
+                          onClick={() => handleDelete(user.userId)}
+                        >
+                          Eliminar usuario
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </Table>
         </ScrollArea>
       </Paper>
     </Container>
