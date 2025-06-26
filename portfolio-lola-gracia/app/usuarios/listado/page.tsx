@@ -13,7 +13,7 @@ import {
   ScrollArea,
 } from '@mantine/core';
 import { getUserFromCookie } from '@/app/functions/functions';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 type User = {
   userId: string;
