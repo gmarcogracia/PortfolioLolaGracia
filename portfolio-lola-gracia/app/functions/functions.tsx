@@ -41,16 +41,22 @@ export async function getUserFromCookie(): Promise<number | null> {
 //   }
 //   }else{
 
-    console.log("ESta entrando a la version de produccion");
+    try{
+
+    
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}auth/getUserByCookie`, {
   method: 'GET',
   credentials: 'include',
    headers: { 'Content-Type': 'application/json' },
 });
 const user = await response.json();
-console.log("User from cookie");
-console.log(user);
-return user.roleId ?? null;
+
+return user.roleId 
+}catch{
+return null
+}
+
+
 
 
   // }

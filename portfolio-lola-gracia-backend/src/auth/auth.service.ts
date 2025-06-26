@@ -17,7 +17,7 @@ export class AuthService {
   
         //This checks that user exists in database. If user exists it returns his id and username, otherwise it returns null
     async validateUser(input:AuthInput):Promise <SignInData |null>{
-        console.log('Backend SECRET:', process.env.JWT_SECRET);
+   
 
         const user = await this.userService.findByName(input.username)
         const bcrypt = require('bcrypt');
@@ -36,7 +36,7 @@ export class AuthService {
     }
     async authenticate(input:AuthInput):Promise<AuthResult |null>{
         const user= await this.validateUser(input)
-        console.log(user);
+   
         if(!user){
             throw new UnauthorizedException('No se ha encontrado un usuario con ese nombre y contraseña');
         }

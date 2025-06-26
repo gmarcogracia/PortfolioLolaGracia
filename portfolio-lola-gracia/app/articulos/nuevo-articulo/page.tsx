@@ -97,11 +97,8 @@ export default function EditorPage() {
       try {
         const roleFromCookie = await getUserFromCookie();
         if (!isMounted) return;
-
-        console.log("Rol obtenido:", roleFromCookie);
         
         if (roleFromCookie === null || roleFromCookie > 2) {
-          console.log("Redirigiendo a no autorizado");
           router.push('../unauthorized');
           return;
         }
@@ -135,7 +132,7 @@ export default function EditorPage() {
       </Container>
     );
   }
-console.log(role)
+
   const handleSave = async () => {
     const htmlContent = editor?.getHTML() || '';
     const slug = title.trim().replaceAll(' ', '-');

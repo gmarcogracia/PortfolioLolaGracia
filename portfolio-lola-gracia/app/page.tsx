@@ -20,7 +20,7 @@ export default function HomePage() {
         <Title order={1}>Hola, soy Lola Gracia, periodista y gestora de eventos personales</Title>
       </Stack>
 
-      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xl" mb="xl">
+      <SimpleGrid cols={{ base: 1, sm: 1 }} spacing="xl" mb="xl">
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Title order={3} mb="xs">Sobre mí</Title>
           <Text size="sm" c="dimmed">

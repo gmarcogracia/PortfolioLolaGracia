@@ -41,10 +41,9 @@ export default function EditArticlePage() {
         const roleFromCookie = await getUserFromCookie();
         if (!isMounted) return;
 
-        console.log("Rol obtenido:", role);
+    
         
         if (roleFromCookie === null || roleFromCookie > 2) {
-          console.log("Redirigiendo a no autorizado");
           router.push('.././unauthorized');
           return;
         }
