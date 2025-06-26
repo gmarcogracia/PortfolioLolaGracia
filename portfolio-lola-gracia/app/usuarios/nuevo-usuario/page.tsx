@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable no-unused-expressions */
 
 import { useState, FormEvent } from 'react';
 import Link from 'next/link';

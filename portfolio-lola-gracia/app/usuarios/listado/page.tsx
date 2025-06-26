@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable no-unused-expressions */
 
 import { useEffect, useState } from 'react';
 import {
@@ -11,6 +12,8 @@ import {
   Paper,
   ScrollArea,
 } from '@mantine/core';
+import { getUserFromCookie } from '@/app/functions/functions';
+import { useRouter } from 'next/router';
 
 type User = {
   userId: string;
@@ -20,6 +23,51 @@ type User = {
 };
 
 export default function UsuariosList() {
+  const router = useRouter()
+  const [role, setRole] = useState<number | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
+
+
+
+   //Susituto del middleware
+    useEffect(() => {
+      let isMounted = true;
+  
+      const verifyAuth = async () => {
+        try {
+          setLoading(true);
+          const roleFromCookie = await getUserFromCookie();
+          if (!isMounted) return;
+  
+          console.log("Rol obtenido:", role);
+          
+          if (roleFromCookie === null || roleFromCookie != 1) {
+            console.log("Redirigiendo a no autorizado");
+            router.push('.././unauthorized');
+            return;
+          }
+  
+          setRole(roleFromCookie);
+        } catch (error) {
+          console.error("Error en verificación de auth:", error);
+          if (!isMounted) return;
+          router.push('../unauthorized');
+        } finally {
+          if (isMounted){
+  
+          setAuthChecked(true);
+          setLoading(false);
+        }
+  
+        }
+      };
+  
+      verifyAuth();
+  
+      return () => {
+        isMounted = false;
+      };
+    }, [router]);
   const fetchUsers = async () => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/list`, {

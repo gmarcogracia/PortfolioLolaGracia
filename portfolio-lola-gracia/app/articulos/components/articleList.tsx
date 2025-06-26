@@ -15,6 +15,7 @@ import {
 import DOMPurify from 'dompurify';
 import Link from 'next/link';
 
+
 type Article = {
   id: string;
   title: string;

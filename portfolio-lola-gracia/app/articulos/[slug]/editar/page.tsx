@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable no-unused-expressions */
 
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -14,8 +15,11 @@ import {
 import { IconBrandTwitter } from '@tabler/icons-react';
 import { useEditorContext } from '@/context/editorContext';
 import TiptapEditor from '@/app/articulos/components/texteditor';
+import { getUserFromCookie } from '@/app/functions/functions';
 
 export default function EditArticlePage() {
+  const [role, setRole] = useState<number | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
   const { slug } = useParams<{ slug: string }>();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -23,6 +27,50 @@ export default function EditArticlePage() {
   const [articleId, setArticleId] = useState<string | null>(null);
   const { editor } = useEditorContext();
   const router = useRouter();
+
+
+
+  //Susituto del middleware
+  useEffect(() => {
+    let isMounted = true;
+
+    const verifyAuth = async () => {
+      try {
+        setLoading(true);
+        const roleFromCookie = await getUserFromCookie();
+        if (!isMounted) return;
+
+        console.log("Rol obtenido:", role);
+        
+        if (roleFromCookie === null || roleFromCookie > 2) {
+          console.log("Redirigiendo a no autorizado");
+          router.push('.././unauthorized');
+          return;
+        }
+
+        setRole(roleFromCookie);
+      } catch (error) {
+        console.error("Error en verificación de auth:", error);
+        if (!isMounted) return;
+        router.push('../unauthorized');
+      } finally {
+        if (isMounted){
+
+        setAuthChecked(true);
+        setLoading(false);
+      }
+
+      }
+    };
+
+    verifyAuth();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [router]);
+
+
 
   // Cargar artículo
   useEffect(() => {

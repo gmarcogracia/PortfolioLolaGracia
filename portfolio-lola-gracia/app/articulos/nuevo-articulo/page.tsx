@@ -89,7 +89,7 @@ export default function EditorPage() {
   const [title, setTitle] = useState('');
   const [success, setSuccess] = useState(false);
 
-  // Verificación de autorización mejorada
+  //Susituto del middleware
   useEffect(() => {
     let isMounted = true;
 
