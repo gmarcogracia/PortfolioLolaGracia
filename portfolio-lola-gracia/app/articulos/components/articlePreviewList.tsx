@@ -8,7 +8,6 @@ import {
   Loader,
   Grid,
   Button,
-  Container,
 } from '@mantine/core';
 import DOMPurify from 'dompurify';
 import Link from 'next/link';

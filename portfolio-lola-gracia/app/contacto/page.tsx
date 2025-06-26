@@ -6,7 +6,6 @@ import {
   Text,
   Stack,
   Group,
-  Anchor,
   Button,
   ActionIcon,
   Divider,
