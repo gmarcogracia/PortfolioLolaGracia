@@ -32,7 +32,8 @@ export default function Users() {
       } else {
         alert("Bienvenid@ " + data.username);
         router.push('/');
-        router.refresh(); //Esto hace que se refresque y cargue el tab de usuario en caso de que sea necesario
+        window.location.reload();
+     
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
