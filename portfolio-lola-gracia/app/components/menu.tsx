@@ -42,6 +42,7 @@ export default  function Navbar() {
   
     { label: 'Artículos', href: '/articulos' },
     { label: 'Podcasts', href: '/podcast' },
+    { label: 'Contacto', href: '/contacto' },
   ];
 
   return (
@@ -54,7 +55,7 @@ export default  function Navbar() {
         <Link href="/" style={{ fontWeight: 700, fontSize: rem(20), textDecoration: 'none' }}>
 Página Principal        </Link>
 
-        {/* Desktop links */}
+        {/* Links pc */}
         <Group visibleFrom="sm" gap="md">
           {links.map((link) => (
             <Button
@@ -69,7 +70,7 @@ Página Principal        </Link>
           ))}
         </Group>
 
-        {/* Mobile burger */}
+        {/*  burger menu */}
         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" />
       </Container>
 
