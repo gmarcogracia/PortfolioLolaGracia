@@ -1,96 +1,86 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
 
+import Link from 'next/link';
+import { Container, Title, Text, Button, SimpleGrid, Card, Stack, Box } from '@mantine/core';
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <Container size="lg" py="xl">
+      {/* Encabezado principal */}
+      <Stack gap="sm" mb="xl" align="center">
+        <Title order={1}>Hola, soy [Tu Nombre]</Title>
+        <Text size="lg" c="dimmed" ta="center" maw={600}>
+          Bienvenido a mi espacio. Soy [tu profesión/especialidad]. Aquí comparto mis proyectos, reflexiones y más.
+        </Text>
+      </Stack>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      {/* Secciones principales */}
+      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xl" mb="xl">
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Title order={3} mb="xs">Proyectos</Title>
+          <Text size="sm" c="dimmed">
+            Una muestra de los trabajos que he realizado en diseño, desarrollo o investigación.
+          </Text>
+          <Button component={Link} href="/proyectos" mt="md" variant="light" color="blue">
+            Ver proyectos
+          </Button>
+        </Card>
+
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Title order={3} mb="xs">Sobre mí</Title>
+          <Text size="sm" c="dimmed">
+            Descubre quién soy, qué me inspira y qué me motiva a crear.
+          </Text>
+          <Button component={Link} href="/about" mt="md" variant="light" color="blue">
+            Conóceme
+          </Button>
+        </Card>
+      </SimpleGrid>
+
+      {/* Sección de Blog */}
+      <Box mb="xl">
+        <Title order={2} mb="md">Últimos posts del blog</Title>
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
+          {[
+            {
+              title: 'Cómo aprendí a trabajar en remoto',
+              href: '/blog/remoto',
+              excerpt: 'Una guía práctica basada en experiencia real sobre productividad y balance personal.'
+            },
+            {
+              title: 'Mis herramientas de diseño favoritas',
+              href: '/blog/herramientas',
+              excerpt: 'Un repaso por apps que me acompañan día a día para crear de forma más fluida.'
+            },
+            {
+              title: 'Consejos para freelancing sostenible',
+              href: '/blog/freelance',
+              excerpt: 'Sistemas, hábitos y mindset que me han ayudado a vivir del trabajo independiente.'
+            }
+          ].map((post, idx) => (
+            <Card key={idx} shadow="sm" padding="lg" radius="md" withBorder>
+              <Title order={4} mb="xs">{post.title}</Title>
+              <Text size="sm" c="dimmed" mb="sm">
+                {post.excerpt}
+              </Text>
+              <Button component={Link} href={post.href} variant="subtle" color="blue" size="xs">
+                Leer más →
+              </Button>
+            </Card>
+          ))}
+        </SimpleGrid>
+      </Box>
+
+      {/* Llamada a la acción final */}
+      <Stack align="center" gap="xs">
+        <Title order={2}>¿Trabajamos juntos?</Title>
+        <Text c="dimmed" ta="center" maw={600}>
+          Siempre estoy abierto a colaborar en proyectos interesantes, resolver problemas o simplemente charlar.
+        </Text>
+        <Button component={Link} href="/contacto" size="md" variant="gradient" gradient={{ from: 'blue', to: 'cyan' }}>
+          Contactar
+        </Button>
+      </Stack>
+    </Container>
   );
 }

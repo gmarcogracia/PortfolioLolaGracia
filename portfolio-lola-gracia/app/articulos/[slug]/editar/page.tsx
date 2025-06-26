@@ -32,11 +32,12 @@ export default function EditArticlePage() {
 
   //Susituto del middleware
   useEffect(() => {
+       setLoading(true);
     let isMounted = true;
 
     const verifyAuth = async () => {
       try {
-        setLoading(true);
+     
         const roleFromCookie = await getUserFromCookie();
         if (!isMounted) return;
 
@@ -76,6 +77,7 @@ export default function EditArticlePage() {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
+           setLoading(true);
         const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}articles/${slug}`);
         const data = await res.json();
 

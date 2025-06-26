@@ -52,8 +52,7 @@ export default  function Navbar() {
         style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
       >
         <Link href="/" style={{ fontWeight: 700, fontSize: rem(20), textDecoration: 'none' }}>
-          Mi Sitio
-        </Link>
+Página Principal        </Link>
 
         {/* Desktop links */}
         <Group visibleFrom="sm" gap="md">
