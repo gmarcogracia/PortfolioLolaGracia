@@ -49,7 +49,7 @@ export default function UsuariosList() {
 
         setRole(roleFromCookie);
       } catch (error) {
-        console.error("Error en verificación de auth:", error);
+        console.error("Error en verificación", error);
         if (!isMounted) return;
         router.push('../unauthorized');
       } finally {
@@ -77,10 +77,12 @@ export default function UsuariosList() {
     }
   };
 
-  // Cargar usuarios al montar el componente 
+  // Cargar usuarios tras ver que tiene permisos y no esta cargando
   useEffect(() => {
+  if (!loading && role === 1) {
     fetchUsers();
-  }, []);
+  }
+}, [role]);
 
   // Manejar cambio de rol 
   const handleGrantRole = async (userId: string) => {
