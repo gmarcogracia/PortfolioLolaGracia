@@ -1,5 +1,5 @@
 'use client';
-/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars*/
 
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
