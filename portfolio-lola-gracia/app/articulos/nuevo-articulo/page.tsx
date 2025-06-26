@@ -10,6 +10,7 @@ import {
   Title,
   Notification,
   Group,
+  Loader,
 } from '@mantine/core';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
@@ -89,6 +90,8 @@ export default function EditorPage() {
   const { editor } = useEditorContext();
   const [title, setTitle] = useState('');
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false); // Loader para guardar
+  const [tweeting, setTweeting] = useState(false); // Loader para tuit
 
   //Susituto del middleware
   useEffect(() => {
@@ -121,7 +124,6 @@ export default function EditorPage() {
     };
   }, [router]);
 
-  // Mostrar carga mientras se verifica la autenticación
   if (!authChecked) {
     return (
       <Container size="md" py="xl">
@@ -135,22 +137,25 @@ export default function EditorPage() {
   }
 
   const handleSave = async () => {
+    setLoading(true);
+
     const htmlContent = editor?.getHTML() || '';
     const slug = title.trim().replaceAll(' ', '-');
 
     if (!htmlContent || !title) {
       alert('Por favor introduce un título y texto.');
+      setLoading(false);
       return;
     }
-
+    
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}articles/save`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: JSON.stringify({ content: htmlContent, title, slug }),
     });
+
+    setLoading(false);
 
     if (!response.ok) {
       alert('Se ha producido un error');
@@ -163,9 +168,9 @@ export default function EditorPage() {
   };
 
   const handleTweet = () => {
-    const html = editor?.getHTML() || '';
+    setTweeting(true);
 
-    // Convierte el texto html de contenido a texto enriquecido compatible con twitter
+    const html = editor?.getHTML() || '';
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     const elements = doc.body.childNodes;
@@ -177,18 +182,15 @@ export default function EditorPage() {
         const node = el as HTMLElement;
 
         switch (node.tagName) {
-          // Añade los espacios correspondientes a los parrafos
           case 'P':
             result += parseRichText(node) + '\n\n';
             break;
-          // Añade el iconito de bullet point en las listas desordenadas
           case 'UL':
             node.querySelectorAll('li').forEach(li => {
               result += `• ${parseRichText(li)}\n`;
             });
             result += '\n';
             break;
-          // añade los numeros a las listas ordenadas
           case 'OL':
             node.querySelectorAll('li').forEach((li, i) => {
               result += `${i + 1}. ${parseRichText(li)}\n`;
@@ -203,7 +205,9 @@ export default function EditorPage() {
 
     const tweetText = encodeURIComponent(result.slice(0, 280));
     const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+
     window.open(tweetUrl, '_blank');
+    setTimeout(() => setTweeting(false), 500); // Espera breve para simular carga
   };
 
   return (
@@ -239,17 +243,23 @@ export default function EditorPage() {
 
         <Group justify="space-between" mt="xl">
           <Button 
-            leftSection={<IconBrandTwitter size={18} />} 
-            onClick={handleTweet} 
-            variant="light" 
-            color="blue" 
+            leftSection={tweeting ? <Loader size="xs" /> : <IconBrandTwitter size={18} />}
+            onClick={handleTweet}
+            variant="light"
+            color="blue"
+            disabled={tweeting}
             title="We're still not calling it X, you manchild"
           >
-            Tuitear contenido
+            {tweeting ? 'Generando tuit...' : 'Tuitear contenido'}
           </Button>
 
-          <Button onClick={handleSave} color="teal">
-            Guardar artículo
+          <Button
+            onClick={handleSave}
+            color="teal"
+            disabled={loading}
+            leftSection={loading && <Loader size="xs" />}
+          >
+            {loading ? 'Guardando...' : 'Guardar artículo'}
           </Button>
         </Group>
       </Paper>
