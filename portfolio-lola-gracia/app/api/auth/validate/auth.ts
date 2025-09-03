@@ -3,7 +3,7 @@
 
 // // Type for your user data from backend
 // type UserData = {
-//   userId: string
+//   userid: string
 //   username: string
 //   roleId: number
 // }
