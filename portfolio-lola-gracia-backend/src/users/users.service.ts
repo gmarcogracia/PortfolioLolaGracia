@@ -15,8 +15,8 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService {
-   async grantRole(userid: string) {
-        var user =  await this.userRepository.findOneBy({ userid });
+   async grantRole(userId: string) {
+        var user =  await this.userRepository.findOneBy({ userId });
         if (!user) {
             throw new NotFoundException('USER NOT FOUND');
         }
@@ -31,8 +31,8 @@ export class UsersService {
 
     deleteUser //Devolverlo lo awaitea
         (id: string) {
-        var userid = id;
-        this.userRepository.delete({ userid })
+        var userId = id;
+        this.userRepository.delete({ userId })
     }
 
     constructor(
@@ -48,7 +48,7 @@ export class UsersService {
 
         const hash = await bcrypt.hash(password,Number(this.configService.get("SALT_ROUNDS")))
         const userName = createUserDetails.username;
-        const newUser = await this.userRepository.create({username:userName,password:hash, userid: uuidv4() });
+        const newUser = await this.userRepository.create({username:userName,password:hash, userId: uuidv4() });
 
         return this.userRepository.save(newUser);
 
@@ -65,10 +65,10 @@ export class UsersService {
         // return users.find((user)=>user.username===username);
         // throw new NotImplementedException
     }
-    async findById(userid: string): Promise<User | null> {
+    async findById(userId: string): Promise<User | null> {
         const user = this.userRepository.findOne({
             where:{
-                userid:userid
+                userId:userId
             }
         });
 
@@ -82,10 +82,10 @@ export class UsersService {
         return users
     }
     //Unimplemented
-    // updateUser(userid: string, UpdateUserDetails: UpdateUserParams) {
+    // updateUser(userId: string, UpdateUserDetails: UpdateUserParams) {
     //     //Devolverlo lo awaitea
     //     return this.userRepository.update(
-    //         { userid } //Criterio por el que buscar el registro que actualizar
+    //         { userId } //Criterio por el que buscar el registro que actualizar
     //         , { ...UpdateUserDetails })
 
     // }

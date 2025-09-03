@@ -15,7 +15,7 @@ import { getUserFromCookie } from '@/app/functions/functions';
 import { useRouter } from 'next/navigation';
 
 type User = {
-  userid: string;
+  userId: string;
   username: string;
   roleId: number;
 };
@@ -85,9 +85,9 @@ export default function UsuariosList() {
 }, [role]);
 
   // Manejar cambio de rol 
-  const handleGrantRole = async (userid: string) => {
+  const handleGrantRole = async (userId: string) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/${userid}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/${userId}`, {
         method: 'PATCH',
         credentials: 'include',
       });
@@ -103,9 +103,9 @@ export default function UsuariosList() {
   };
 
   // Manejar eliminación de usuario / Handle user deletion
-  const handleDelete = async (userid: string) => {
+  const handleDelete = async (userId: string) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/${userid}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}users/${userId}`, {
         method: 'DELETE',
         credentials: 'include',
       });
@@ -113,7 +113,7 @@ export default function UsuariosList() {
       if (res.ok) {
         // Eliminar usuario de la lista localmente sin necesidad de refrescar
        
-        setUsers(prevUsers => prevUsers.filter(user => user.userid !== userid));
+        setUsers(prevUsers => prevUsers.filter(user => user.userId !== userId));
       }
     } catch (error) {
       console.error('Error al eliminar usuario:', error);
@@ -155,9 +155,9 @@ export default function UsuariosList() {
                 </tr>
               ) : (
                 nonAdminUsers.map((user) => (
-                  <tr key={user.userid}>
+                  <tr key={user.userId}>
                     <td style={{ width: '20%' }}>{user.username}</td>
-                    <td style={{ width: '40%', wordBreak: 'break-all' }}>{user.userid}</td>
+                    <td style={{ width: '40%', wordBreak: 'break-all' }}>{user.userId}</td>
                     <td style={{ width: '20%', textAlign: 'center' }}>
                       {user.roleId === 2 ? "Editor" : "Usuario"}
                     </td>
@@ -168,7 +168,7 @@ export default function UsuariosList() {
                           color="teal"
                           radius="md"
                           size="xs"
-                          onClick={() => handleGrantRole(user.userid)}
+                          onClick={() => handleGrantRole(user.userId)}
                         >
                           {user.roleId === 2 ? 'Ascender a administrador' : 'Ascender a editor'}
                         </Button>
@@ -177,7 +177,7 @@ export default function UsuariosList() {
                           color="red"
                           radius="md"
                           size="xs"
-                          onClick={() => handleDelete(user.userid)}
+                          onClick={() => handleDelete(user.userId)}
                         >
                           Eliminar usuario
                         </Button>

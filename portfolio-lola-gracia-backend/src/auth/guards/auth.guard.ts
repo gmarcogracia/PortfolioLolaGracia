@@ -25,13 +25,13 @@ export class AuthGuard implements CanActivate {
     
 
       request.user = {
-        userid: tokenPayload.sub,
+        userId: tokenPayload.sub,
         username: tokenPayload.username,
         
 
       }
 
-      const currentUser = await this.userService.findById(request.user.userid);
+      const currentUser = await this.userService.findById(request.user.userId);
      
    
 
