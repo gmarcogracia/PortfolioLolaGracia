@@ -51,7 +51,7 @@ export default function TiptapEditor() {
           Lista Ordenada
         </Button>
   
-        </Button>
+        
         <Button variant="default" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
           Encabezado 
         </Button>
